@@ -1,122 +1,113 @@
 //je vais récupérer le bouton en l'appelant par sa class
 //si on click dessus un message va s'afficher dans la console de l'inspecteur
-    console.log('cookie js loaded');
-
-    jQuery(document).ready(function() {
-        var button = document.querySelector('.cky-prefrence-btn-wrapper .cky-btn-reject');
-
-        if (button) {
-            button.addEventListener('click', function() {
-                console.log('Le bouton Refusé a été clické.');
-                var variable1 = "consentid";
-                var variable3 = "consent";
-                var variable3 = "action";
-                var variable4 = "necessary";
-                var variable5 = "functionnal";
-                var variable6 = "analytics";
-                var variable7 = "performance";
-                var variable8 = "advertisement";
-
-                $.ajax({
-                    type: "POST",
-                    url: "Controller.php",
-
-                })
-            });
-        }
-    });
 
 //je vais récupérer le bouton en l'appelant par sa class
 //si on click dessus un message va s'afficher dans la console de l'inspecteur
-    jQuery(document).ready(function() {
-        var button = document.querySelector('.cky-prefrence-btn-wrapper .cky-btn-accept');
-        
-        if (button) {
-            button.addEventListener('click', function() {
-                console.log('Le bouton Accepté a été clické.');
-            });
-        }  
-    });
+// jQuery(document).ready(function() {
+//     var button = document.querySelector('.cky-prefrence-btn-wrapper .cky-btn-accept');
+    
+//     if (button) {
+//         button.addEventListener('click', function() {
+//             console.log('Le bouton Accepté a été clické.');
+//         });
+//     }  
+// });
 
 //je vérifie si le plugin est installé 
-fetch("wp-content/plugins/cookie-law-info")
+fetch("wp-content/plugins/cookie-notice")
 .then(function(response) {
-        if(response.ok) {
-            console.log("Le plugin est installé.");
-        } else {
-            console.log("Le plugin n'est pas installé");
-        }
-    })
-    .catch(function() {
-        console.log("An error occured while trying to access the file.");
-    });
-
-//je vérifie la présence des valeurs suivantes
-var consentid = "consentid";
-if (consentid == "consentid") {
-    console.log("consentid existe.");
-} else {
-    console.log("consentid n'existe pas.");
-}
-
-var consent = "consent";
-if (consent == "consent") {
-    console.log("consent existe.");
-} else {
-    console.log("consent n'existe pas.");
-}
-
-var action = "action";
-if (action == "action") {x
-    console.log("action existe.");
-} else {
-    console.log("action n'existe pas.");
-}
-
-var necessary = "necessary";
-if (necessary == "necessary") {
-    console.log("necessary existe.");
-} else {
-    console.log("necessary n'existe pas.");
-}
-
-var functionnal = "functionnal";
-if (functionnal == "functionnal") {
-    console.log("functionnal existe.");
-} else {
-    console.log("functionnal n'existe pas.");
-}
-
-var analytics = "analytics";
-if (analytics == "analytics") {
-    console.log("analytics existe.");
-} else {
-    console.log("analytics n'existe pas.");
-}
-
-var performance = "performance";
-if (performance == "performance") {
-    console.log("performance existe.");
-} else {
-    console.log("performance n'existe pas.");
-}
-
-var advertisement = "advertisement";
-if (advertisement == "advertisement") {
-    console.log("advertisement existe.");
-} else {
-    console.log("advertisement n'existe pas.");
-}
-
-//je vérifis si le Analytics a été accepté ou non
-jQuery(document).ready(function() {
-    var button = document.querySelector('.cky-switch input[type="checkbox"]');
-    
-    if (button) {
-        button.addEventListener('click', function() {
-            console.log('Le paramètre Analytics a été refusé');
-        });
-    }  
-
+    if(response.ok) {
+        console.log("Le plugin est installé.");
+    } else {
+        console.log("Le plugin n'est pas installé");
+    }
+})
+.catch(function() {
+    console.log("An error occured while trying to access the file.");
 });
+
+//je vérifie si le bouton "non"" a été clické
+jQuery(document).ready(function() {
+var button = document.querySelector('#cn-refuse-cookie');
+
+    button.addEventListener('click', function() {
+        console.log('Les cookies ont été refusés.');
+
+        // fetch( {
+        //     url : "wp-content/plugins/RefusCookie/cookie.php",
+        //     method : "POST",
+        //     dataType : "json",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({column: "refus", value:false})
+        // })
+        // console.log("test")
+        // .then(response => response.text())
+        // console.log("test2")
+        // .then(data => console.log(data === "true"))
+        // console.log("test3")
+        // .catch(error => console.error(error));
+        // console.log("test4")
+
+        ajax({
+            type: "POST",
+            url :"wp-content/plugins/refus-cookie/cookie.php",
+            data : { refus : true },
+            success: function(data) {
+                console.log("Données envoyées");
+            }
+        });
+    });
+});
+
+
+    // var xhr = new XMLHttpRequest();
+    // xhr.open("POST", "cookie.php", true);
+
+    // //envoi les informations du header adaptées avec la requête
+    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    // //Appelle une fonction au changement d"état.
+    // xhr.onreadystatechange = function() {
+    //     if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+    //     }
+    // }
+    // xhr.send();
+
+// if (button) {
+//         button.addEventListener("click", function() {
+//             fetch("wp-content/plugins/RefusCookie/cookie.php", {
+//                 method : "POST",
+//                 headers: {
+//                     "Content-Type": "application/x-www-form-urlencoded"
+//                 },
+//                 body: JSON.stringify({column: "refus", value:false})
+//             })
+//             .then(response => response.json())
+//             .then(data => console.log(data))
+//             .catch(error => console.error(error));
+//         })
+//     }
+
+
+// let analyticsChecked = true;
+
+// document.querySelectorAll('.cky-switch input[type="checkbox"]').addEventListener("change", function() {
+//     analyticsChecked = this.checked;
+// });
+// document.getElementById('.cky-prefrence-btn-wrapper .cky-btn cky-btn-preferences').addEventListener("click", function() {
+//     if(!analyticsChecked) {
+//         fetch("wp-content/plugins/RefusCookie/cookie.php", {
+//             method: "POST",
+//         headers: {
+//         "Content-Type": "application/json"
+//             },
+//         body: JSON.stringify({ data: "true" })
+//         })
+//     .then(response => response.json())
+//     .then(data => console.log(data))
+//     .catch(error => console.error(error));
+// }
+
 

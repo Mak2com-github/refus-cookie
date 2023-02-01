@@ -39,13 +39,9 @@ function create_db() {
 
     $sql_cookie = "CREATE TABLE IF NOT EXISTS {$cookie_table_name} (
         `id` BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `ck_consentid` varchar(255) NULL,
-        `ck_consent` boolean NULL,
-        `ck_action` boolean NULL,
-        `ck_necessary` boolean NULL,
-        `ck_functionnal` boolean NULL,
-        `ck_analytics` boolean NULL,
-        `created_at` DATETIME
+        `refus` INT(10) UNSIGNED NOT NULL,
+        `created_at` DATETIME NULL,
+        `updated_at` DATETIME NULL
         )";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -59,8 +55,8 @@ add_action('admin_menu', 'init_plugin_menu');
 function init_plugin_menu()
 {
     add_menu_page(
-        'CookieRefus',
-        'CookieRefus',
+        'refus-cookie',
+        'refus-cookie',
         'manage_options',
         'refus_cookie',
         'cookie_dashboard',
@@ -86,3 +82,24 @@ function cookie_custom_scripts() {
     wp_enqueue_script('cookie_js', plugin_dir_url(__FILE__) . '/js/main.js', array('jquery'), false, true);
 }
 //j'indique que je vais utiliser du jquery dans le main.js
+
+header("Content-Type: application/json");
+
+$host = 'localhost';
+$username = 'root';
+$password = 'root';
+$dbname = 'wordpress_test_1';
+
+$analytics = $_POST["1"];
+$db = new mysqli($host, $username, $password, $dbname);
+
+$sql = "INSERT INTO `wp_refus_cookie` (`refus`) VALUES (TRUE)";
+$result = mysqli_query($db, $sql);
+
+$count = mysqli_fetch_row($result)[1];
+$data = $count > 100 ? "true" : "false";
+echo json_encode($data);
+$db->close();
+
+
+

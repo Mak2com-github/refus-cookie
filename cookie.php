@@ -49,7 +49,7 @@ function create_db() {
         $updated_at = date('Y-m-d H:i:s');
 
         $wpdb->insert($cookie_table_name, array(
-            'refus' => 1,
+            'refus' => 0,
             'created_at' => $created_at,
             'updated_at' => $updated_at,
         ));
@@ -95,18 +95,15 @@ add_action( 'wp_ajax_nopriv_update_data', 'update_data' );
 
 function update_data() {
 
-    $host = 'localhost';
-    $username = 'root';
-    $password = 'root';
-    $dbname = 'wordpress_test_1';
-    
-    if($_SERVER["REQUEST_METHOD"] === "POST") {
-        $db = new mysqli($host, $username, $password, $dbname);
-    
-        $value = "SELECT `refus` FROM `wp_refus_cookie` WHERE `id` = 1";
-        $value++;
-        $query = "UPDATE `wp_refus_cookie` SET `refus` = $value WHERE `id` = 1";
-        mysqli_query($db, $query);
-        $db->close();
-    }
+    global $wpdb;
+    $charset_collate = $wpdb->charset;
+
+    $wpdb_collate = $wpdb->collate;
+    $wpdb_charset = $wpdb->charset;
+    $cookie_table_name = $wpdb->prefix . 'refus_cookie';
+
+    $sql = "UPDATE `wp_refus_cookie` SET `refus` = `refus` + 1, `updated_at`= NOW()";
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
+
+    dbDelta($sql);
 }

@@ -3,16 +3,6 @@
 
 //je vais récupérer le bouton en l'appelant par sa class
 //si on click dessus un message va s'afficher dans la console de l'inspecteur
-// jQuery(document).ready(function() {
-//     var button = document.querySelector('.cky-prefrence-btn-wrapper .cky-btn-accept');
-    
-//     if (button) {
-//         button.addEventListener('click', function() {
-//             console.log('Le bouton Accepté a été clické.');
-//         });
-//     }  
-// });
-
 //je vérifie si le plugin est installé 
 fetch("wp-content/plugins/cookie-notice")
 .then(function(response) {
@@ -62,52 +52,5 @@ var button = document.querySelector('#cn-refuse-cookie');
 });
 
 
-    // var xhr = new XMLHttpRequest();
-    // xhr.open("POST", "cookie.php", true);
-
-    // //envoi les informations du header adaptées avec la requête
-    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    // //Appelle une fonction au changement d"état.
-    // xhr.onreadystatechange = function() {
-    //     if(this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-    //     }
-    // }
-    // xhr.send();
-
-// if (button) {
-//         button.addEventListener("click", function() {
-//             fetch("wp-content/plugins/RefusCookie/cookie.php", {
-//                 method : "POST",
-//                 headers: {
-//                     "Content-Type": "application/x-www-form-urlencoded"
-//                 },
-//                 body: JSON.stringify({column: "refus", value:false})
-//             })
-//             .then(response => response.json())
-//             .then(data => console.log(data))
-//             .catch(error => console.error(error));
-//         })
-//     }
-
-
-// let analyticsChecked = true;
-
-// document.querySelectorAll('.cky-switch input[type="checkbox"]').addEventListener("change", function() {
-//     analyticsChecked = this.checked;
-// });
-// document.getElementById('.cky-prefrence-btn-wrapper .cky-btn cky-btn-preferences').addEventListener("click", function() {
-//     if(!analyticsChecked) {
-//         fetch("wp-content/plugins/RefusCookie/cookie.php", {
-//             method: "POST",
-//         headers: {
-//         "Content-Type": "application/json"
-//             },
-//         body: JSON.stringify({ data: "true" })
-//         })
-//     .then(response => response.json())
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error));
-// }
 
 

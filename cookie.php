@@ -6,7 +6,7 @@
     Version : 0.1
     Author: Anaïs
     Auhtos URI: https://worsdpress.com
-    Text Domain: RefusCookie
+    Text Domain: refus-cookie
 */
 
 // // include('src/CookiePlugin.php');
@@ -47,6 +47,12 @@ function create_db() {
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
     
         dbDelta($sql_cookie);
+
+        $wpdb->insert($colonne, array(
+            'refus' => 1,
+            'created_at' => current_time('mysql'),
+            'updated_at'=>current_time('mysql'),
+        ));
 }
 
 //lien dans le menu vers la page de configuration
@@ -90,16 +96,12 @@ $username = 'root';
 $password = 'root';
 $dbname = 'wordpress_test_1';
 
-$analytics = $_POST["1"];
+// $analytics = $_POST["1"];
 $db = new mysqli($host, $username, $password, $dbname);
-
-$sql = "INSERT INTO `wp_refus_cookie` (`refus`) VALUES (TRUE)";
+$sql = "INSERT INTO `wp_refus_cookie` (`refus`) VALUES TRUE";
 $result = mysqli_query($db, $sql);
 
-$count = mysqli_fetch_row($result)[1];
-$data = $count > 100 ? "true" : "false";
-echo json_encode($data);
+// $count = mysqli_fetch_row($result)[1];
+// echo json_encode($data);
+
 $db->close();
-
-
-

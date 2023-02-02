@@ -9,7 +9,6 @@
     Text Domain: refus-cookie
 */
 
-// // include('src/CookiePlugin.php');
 // //je définie ROOTDIR en tant que chemin vers le fichier -> cookie_dashboard.php
 define('ROOTDIR', plugin_dir_path(__FILE__));
 require_once(ROOTDIR.'cookie_dashboard.php');
@@ -20,10 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // //constante 
-// define('COOKIE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
 // //récupère le chemin complet de l'extension
-// require_once COOKIE_PLUGIN_DIR . 'vendor/autoload.php';
 
 register_activation_hook(__FILE__, 'create_db');
 
@@ -48,10 +45,13 @@ function create_db() {
     
         dbDelta($sql_cookie);
 
-        $wpdb->insert($colonne, array(
+        $created_at = date('Y-m-d H:i:s');
+        $updated_at = date('Y-m-d H:i:s');
+
+        $wpdb->insert($cookie_table_name, array(
             'refus' => 1,
-            'created_at' => current_time('mysql'),
-            'updated_at'=>current_time('mysql'),
+            'created_at' => $created_at,
+            'updated_at' => $updated_at,
         ));
 }
 
@@ -72,8 +72,8 @@ function init_plugin_menu()
 }
 
 //supprimer la table lors de la désactivation du plugin
-register_deactivation_hook(__FILE__, 'delate_db');
-function delate_db() {
+register_deactivation_hook(__FILE__, 'delete_db');
+function delete_db() {
 
     global $wpdb;
     $cookie_table_name = $wpdb->prefix. 'refus_cookie';
@@ -89,19 +89,24 @@ function cookie_custom_scripts() {
 }
 //j'indique que je vais utiliser du jquery dans le main.js
 
-header("Content-Type: application/json");
 
-$host = 'localhost';
-$username = 'root';
-$password = 'root';
-$dbname = 'wordpress_test_1';
+add_action( 'wp_ajax_update_data', 'update_data' );
+add_action( 'wp_ajax_nopriv_update_data', 'update_data' );
 
-// $analytics = $_POST["1"];
-$db = new mysqli($host, $username, $password, $dbname);
-$sql = "INSERT INTO `wp_refus_cookie` (`refus`) VALUES TRUE";
-$result = mysqli_query($db, $sql);
+function update_data() {
 
-// $count = mysqli_fetch_row($result)[1];
-// echo json_encode($data);
-
-$db->close();
+    $host = 'localhost';
+    $username = 'root';
+    $password = 'root';
+    $dbname = 'wordpress_test_1';
+    
+    if($_SERVER["REQUEST_METHOD"] === "POST") {
+        $db = new mysqli($host, $username, $password, $dbname);
+    
+        $value = "SELECT `refus` FROM `wp_refus_cookie` WHERE `id` = 1";
+        $value++;
+        $query = "UPDATE `wp_refus_cookie` SET `refus` = $value WHERE `id` = 1";
+        mysqli_query($db, $query);
+        $db->close();
+    }
+}

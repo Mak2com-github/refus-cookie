@@ -83,9 +83,11 @@ function delete_db() {
 //j'appelle, je lis le javascript ici
 //pour afficher dans la console de l'inspecteur d'élément le js, le 'wp_enqueue_scripts' va s'afficher que en front
 // si cela aurait été le hook admin_init, cela sera affiché seulement en back office
-add_action('wp_enqueue_scripts', 'cookie_custom_scripts');
+add_action('admin_init', 'cookie_custom_scripts');
 function cookie_custom_scripts() {
-    wp_enqueue_script('cookie_js', plugin_dir_url(__FILE__) . '/js/main.js', array('jquery'), false, true);
+    wp_enqueue_style('style_cookie');
+    wp_register_style('style_cookie', plugins_url('/css/style.css', __FILE__));
+    wp_enqueue_script('cookie_js', plugin_url('/js/main.js', __FILE__) , array('jquery'), false, true);
 }
 //j'indique que je vais utiliser du jquery dans le main.js
 
@@ -106,4 +108,27 @@ function update_data() {
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
 
     dbDelta($sql);
+}
+
+
+add_action('wp_dashboard_setup', 'my_custom_dashboard_widgets');
+function my_custom_dashboard_widgets() {
+    global $wp_meta_boxes;
+    wp_add_dashboard_widget('custom_help_widget', 'Refus Cookie', 'custom_dashboard_help');
+}
+
+function custom_dashboard_help() {
+    global $wpdb;
+    $charset_collate = $wpdb->charset;
+
+    $wpdb_collate = $wpdb->collate;
+    $wpdb_charset = $wpdb->charset;
+
+    $sql = "SELECT `refus` FROM `wp_refus_cookie`";
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
+
+    //methode get_results pour récupérer l'intégralité de la requete sql, ARRAY_A retourne un tableau indéxé
+    $results = $wpdb->get_results($sql, ARRAY_A);
+    foreach($results as $result) {
+        echo "Taux de refus des cookies: " . $result['refus'];}
 }

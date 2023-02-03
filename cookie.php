@@ -84,13 +84,15 @@ function delete_db() {
 //pour afficher dans la console de l'inspecteur d'élément le js, le 'wp_enqueue_scripts' va s'afficher que en front
 // si cela aurait été le hook admin_init, cela sera affiché seulement en back office
 add_action('admin_init', 'cookie_custom_scripts');
-function cookie_custom_scripts() {
+function cookie_custom_styles() {
     wp_enqueue_style('style_cookie');
     wp_register_style('style_cookie', plugins_url('/css/style.css', __FILE__));
-    wp_enqueue_script('cookie_js', plugin_url('/js/main.js', __FILE__) , array('jquery'), false, true);
 }
-//j'indique que je vais utiliser du jquery dans le main.js
 
+add_action('wp_enqueue_scripts', 'cookie_custom_scripts');
+function cookie_custom_scripts() {
+    wp_enqueue_script('cookie_js', plugins_url('/js/main.js', __FILE__) , array('jquery'), false, true);
+}
 
 add_action( 'wp_ajax_update_data', 'update_data' );
 add_action( 'wp_ajax_nopriv_update_data', 'update_data' );

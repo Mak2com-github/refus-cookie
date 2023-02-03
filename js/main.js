@@ -1,4 +1,3 @@
-
 jQuery(document).ready(function() {
     var button = document.getElementById('cn-refuse-cookie');
     const data = {action:"update_data"};

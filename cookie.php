@@ -1,42 +1,45 @@
 <?php
 /*
-    Plugin name: Refus Cookie
-    Plugin URI: https://wordpress.com
-    Description: Permet de savoir le taux de refus des cookies sur le site. 
-    Version : 1.2
-    Author: Anaïs
-    Auhtos URI: https://worsdpress.com
-    Text Domain: refus-cookie
+ * @link              http://mak2com.fr
+ * @since             1.2
+ * @package           refus-cookie
+ *
+ * @wordpress-plugin
+ * Plugin name: Refus Cookie
+ * Plugin URI: https://wordpress.com
+ * Description: Permet de savoir le taux de refus des cookies sur le site.
+ * Version : 1.2
+ * Author: Anaïs
+ * Author URI: https://worsdpress.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain: refus-cookie
+ * Domain Path:       /languages
 */
 
-define('ROOTDIR', plugin_dir_path(__FILE__));
-require_once(ROOTDIR.'cookie_dashboard.php');
-
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'WPINC' ) ) {
     exit;
 }
 
 register_activation_hook(__FILE__, 'create_db');
-
 function create_db() {
-    
-    global $wpdb;
-    $charset_collate = $wpdb->charset;
 
+    global $wpdb;
+
+    $charset_collate = $wpdb->charset;
     $wpdb_collate = $wpdb->collate;
     $wpdb_charset = $wpdb->charset;
-
     $cookie_table_name = $wpdb->prefix . 'refus_cookie';
 
-    $sql_cookie = "CREATE TABLE IF NOT EXISTS {$cookie_table_name} (
-        `id` BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `refus` INT(10) UNSIGNED NOT NULL,
-        `created_at` DATETIME NULL,
-        `updated_at` DATETIME NULL
-        )";
-
+    if ( $wpdb->get_var("SHOW TABLES LIKE '$cookie_table_name'") != $cookie_table_name ) {
+        $sql_cookie =
+            "CREATE TABLE IF NOT EXISTS {$cookie_table_name} (
+                `id` BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+                `refus` INT(10) UNSIGNED NOT NULL,
+                `created_at` DATETIME NULL,
+                `updated_at` DATETIME NULL
+            )";
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
-    
         dbDelta($sql_cookie);
 
         $created_at = date('Y-m-d H:i:s');
@@ -47,10 +50,10 @@ function create_db() {
             'created_at' => $created_at,
             'updated_at' => $updated_at,
         ));
+    }
 }
 
 add_action('admin_menu', 'init_plugin_menu');
-
 function init_plugin_menu()
 {
     add_menu_page(
@@ -64,22 +67,23 @@ function init_plugin_menu()
     );
 }
 
-register_deactivation_hook(__FILE__, 'delete_db');
-function delete_db() {
+define('ROOTDIR', plugin_dir_path(__FILE__));
+require_once(ROOTDIR .'cookie_dashboard.php');
 
-    global $wpdb;
-    $cookie_table_name = $wpdb->prefix. 'refus_cookie';
-    $wpdb->query("DROP TABLE IF EXISTS $cookie_table_name");   
-}
-
-add_action('admin_init', 'cookie_custom_scripts');
+add_action('admin_init', 'cookie_custom_styles');
 function cookie_custom_styles() {
     wp_enqueue_style('style_cookie');
     wp_register_style('style_cookie', plugins_url('/css/style.css', __FILE__));
 }
 
-add_action('wp_enqueue_scripts', 'cookie_custom_scripts');
+register_deactivation_hook(__FILE__, 'delete_db');
+function delete_db() {
+    global $wpdb;
+    $cookie_table_name = $wpdb->prefix. 'refus_cookie';
+    $wpdb->query("DROP TABLE IF EXISTS $cookie_table_name");
+}
 
+add_action('wp_enqueue_scripts', 'cookie_custom_scripts');
 function cookie_custom_scripts() {
     wp_enqueue_style('style_cookie_front');
     wp_register_style('style_cookie_front', plugins_url('/css/style_front.css', __FILE__));
@@ -93,7 +97,6 @@ function cookie_custom_scripts() {
 
 add_action( 'wp_ajax_update_data', 'update_data' );
 add_action( 'wp_ajax_nopriv_update_data', 'update_data' );
-
 function update_data() {
 
     global $wpdb;
@@ -108,7 +111,6 @@ function update_data() {
 
     dbDelta($sql);
 }
-
 
 add_action('wp_dashboard_setup', 'my_custom_dashboard_widgets');
 function my_custom_dashboard_widgets() {
@@ -128,5 +130,6 @@ function custom_dashboard_help() {
 
     $results = $wpdb->get_results($sql, ARRAY_A);
     foreach($results as $result) {
-        echo "Taux de refus des cookies: " . $result['refus'];}
+        echo "Taux de refus des cookies: " . $result['refus'];
+    }
 }

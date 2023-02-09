@@ -1,4 +1,7 @@
-<?php 
+<?php
+if ( ! defined( 'WPINC' ) ) {
+    exit;
+}
 
 function cookie_dashboard() {
 
@@ -9,23 +12,21 @@ function cookie_dashboard() {
     </div>
     <div class="overview-cookie">
         <?php
-            global $wpdb;
-            $charset_collate = $wpdb->charset;
+        global $wpdb;
+        $charset_collate = $wpdb->charset;
 
-            $wpdb_collate = $wpdb->collate;
-            $wpdb_charset = $wpdb->charset;
+        $wpdb_collate = $wpdb->collate;
+        $wpdb_charset = $wpdb->charset;
 
-            $sql = "SELECT `refus` FROM `wp_refus_cookie`";
-            require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
+        $sql = "SELECT `refus` FROM `wp_refus_cookie`";
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
 
-            $results = $wpdb->get_results($sql, ARRAY_A);
-            foreach($results as $result) {
-                echo "Taux de refus : " . $result['refus'];
-            }
+        $results = $wpdb->get_results($sql, ARRAY_A);
+        foreach($results as $result) {
+            echo "Taux de refus : " . $result['refus'];
+        }
         ?>
     </div>
-<?php
-            
-    }
-?>
+    <?php
 
+}

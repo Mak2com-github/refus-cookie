@@ -1,9 +1,12 @@
 jQuery(document).ready(function() {
     var button = document.getElementById('cn-refuse-cookie');
     const data = {action:"update_data"};
+
     if (button) {
         var closeButton = document.getElementById("cn-close-notice")
         button.addEventListener('click', function() {
+            console.log('Les cookies ont été refusés.');
+
             fetch(php_datas.home_url + '/wp-admin/admin-ajax.php', {
                 method: 'POST',
                 headers: {
@@ -12,13 +15,15 @@ jQuery(document).ready(function() {
                 },
                 body: new URLSearchParams(data),
             })
-            .then(response => {
-                if(response.status === 200 ) {
-                    console.log('Envoyées');
-                }
-            });
+                .then(response => {
+                    if(response.status === 200 ) {
+                        console.log('Envoyées');
+                    }
+                });
         });
         closeButton.addEventListener('click', function() {
+            console.log('Les cookies ont été refusés.');
+
             fetch(php_datas.home_url + '/wp-admin/admin-ajax.php', {
                 method: 'POST',
                 headers: {

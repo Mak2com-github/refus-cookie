@@ -53,23 +53,6 @@ function create_db() {
     }
 }
 
-add_action('admin_menu', 'init_plugin_menu');
-function init_plugin_menu()
-{
-    add_menu_page(
-        'refus-cookie',
-        'refus-cookie',
-        'manage_options',
-        'refus_cookie',
-        'cookie_dashboard',
-        '',
-        3
-    );
-}
-
-define('ROOTDIR', plugin_dir_path(__FILE__));
-require_once(ROOTDIR .'cookie_dashboard.php');
-
 add_action('admin_init', 'cookie_custom_styles');
 function cookie_custom_styles() {
     wp_enqueue_style('style_cookie');

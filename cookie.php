@@ -3,24 +3,18 @@
     Plugin name: Refus Cookie
     Plugin URI: https://wordpress.com
     Description: Permet de savoir le taux de refus des cookies sur le site. 
-    Version : 0.1
+    Version : 1.2
     Author: Anaïs
     Auhtos URI: https://worsdpress.com
     Text Domain: refus-cookie
 */
 
-// //je définie ROOTDIR en tant que chemin vers le fichier -> cookie_dashboard.php
 define('ROOTDIR', plugin_dir_path(__FILE__));
 require_once(ROOTDIR.'cookie_dashboard.php');
 
-// //vérifi que l'on est bien au sein de wordpress
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-
-// //constante 
-
-// //récupère le chemin complet de l'extension
 
 register_activation_hook(__FILE__, 'create_db');
 
@@ -55,7 +49,6 @@ function create_db() {
         ));
 }
 
-//lien dans le menu vers la page de configuration
 add_action('admin_menu', 'init_plugin_menu');
 
 function init_plugin_menu()
@@ -71,7 +64,6 @@ function init_plugin_menu()
     );
 }
 
-//supprimer la table lors de la désactivation du plugin
 register_deactivation_hook(__FILE__, 'delete_db');
 function delete_db() {
 
@@ -80,9 +72,6 @@ function delete_db() {
     $wpdb->query("DROP TABLE IF EXISTS $cookie_table_name");   
 }
 
-//j'appelle, je lis le javascript ici
-//pour afficher dans la console de l'inspecteur d'élément le js, le 'wp_enqueue_scripts' va s'afficher que en front
-// si cela aurait été le hook admin_init, cela sera affiché seulement en back office
 add_action('admin_init', 'cookie_custom_scripts');
 function cookie_custom_styles() {
     wp_enqueue_style('style_cookie');
@@ -132,7 +121,6 @@ function custom_dashboard_help() {
     $sql = "SELECT `refus` FROM `wp_refus_cookie`";
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
 
-    //methode get_results pour récupérer l'intégralité de la requete sql, ARRAY_A retourne un tableau indéxé
     $results = $wpdb->get_results($sql, ARRAY_A);
     foreach($results as $result) {
         echo "Taux de refus des cookies: " . $result['refus'];}

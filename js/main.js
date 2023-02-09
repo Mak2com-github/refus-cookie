@@ -4,9 +4,7 @@ jQuery(document).ready(function() {
     if (button) {
         var closeButton = document.getElementById("cn-close-notice")
         button.addEventListener('click', function() {
-            console.log('Les cookies ont été refusés.');
-    
-            fetch('http://localhost/wordpress/wp-admin/admin-ajax.php', {
+            fetch(php_datas.home_url + '/wp-admin/admin-ajax.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -21,9 +19,7 @@ jQuery(document).ready(function() {
             });
         });
         closeButton.addEventListener('click', function() {
-            console.log('Les cookies ont été refusés.');
-
-            fetch('http://localhost/wordpress/wp-admin/admin-ajax.php', {
+            fetch(php_datas.home_url + '/wp-admin/admin-ajax.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

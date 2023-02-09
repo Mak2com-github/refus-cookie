@@ -17,7 +17,7 @@ function cookie_dashboard() {
 
             $sql = "SELECT `refus` FROM `wp_refus_cookie`";
             require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
-            
+
             $results = $wpdb->get_results($sql, ARRAY_A);
             foreach($results as $result) {
                 echo "Taux de refus : " . $result['refus'];

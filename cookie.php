@@ -53,6 +53,20 @@ function create_db() {
     }
 }
 
+/** INITIALISATION DU PLUGIN **/
+add_action('admin_menu','init_plugin_menu');
+function init_plugin_menu(){
+    add_menu_page(
+        'Réglages',
+        'Refus Cookies',
+        'manage_options',
+        'refus-cookie-settings',
+        'refus_cookie_settings',
+        'dashicons-hammer',
+        10
+    );
+}
+
 add_action('admin_init', 'cookie_custom_styles');
 function cookie_custom_styles() {
     wp_enqueue_style('style_cookie');
@@ -73,10 +87,14 @@ function cookie_custom_scripts() {
     wp_enqueue_script('cookie_js', plugins_url('/js/main.js', __FILE__) , array('jquery'), false, true);
     wp_localize_script( 'cookie_js', 'php_datas',
         array(
-            'home_url' => home_url(),
+            'home_url'      => home_url(),
+            'visitor_ip'    => getUserIP(),
         )
     );
 }
+
+define('ROOTDIR', plugin_dir_path(__FILE__));
+require_once(ROOTDIR . 'cookie-settings.php');
 
 add_action( 'wp_ajax_update_data', 'update_data' );
 add_action( 'wp_ajax_nopriv_update_data', 'update_data' );
@@ -115,4 +133,31 @@ function custom_dashboard_help() {
     foreach($results as $result) {
         echo "Taux de refus des cookies: " . $result['refus'];
     }
+}
+
+function getUserIP()
+{
+    // Get real visitor IP behind CloudFlare network
+    if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+        $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+        $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+    }
+    $client  = $_SERVER['HTTP_CLIENT_IP'];
+    $forward = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    $remote  = $_SERVER['REMOTE_ADDR'];
+
+    if(filter_var($client, FILTER_VALIDATE_IP))
+    {
+        $ip = $client;
+    }
+    elseif(filter_var($forward, FILTER_VALIDATE_IP))
+    {
+        $ip = $forward;
+    }
+    else
+    {
+        $ip = $remote;
+    }
+
+    return $ip;
 }

@@ -30,6 +30,7 @@ function create_db() {
     $wpdb_collate = $wpdb->collate;
     $wpdb_charset = $wpdb->charset;
     $cookie_table_name = $wpdb->prefix . 'refus_cookie';
+    $cookie_table_name_config = $wpdb->prefix . 'refus_cookie_config';
 
     if ( $wpdb->get_var("SHOW TABLES LIKE '$cookie_table_name'") != $cookie_table_name ) {
         $sql_cookie =
@@ -50,6 +51,17 @@ function create_db() {
             'created_at' => $created_at,
             'updated_at' => $updated_at,
         ));
+    }
+    if ( $wpdb->get_var("SHOW TABLES LIKE '$cookie_table_name_config'") != $cookie_table_name_config ) {
+        $sql_cookie =
+            "CREATE TABLE IF NOT EXISTS {$cookie_table_name_config} (
+                `id` BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+                `exclude_ip` VARCHAR(15) NOT NULL,
+                `created_at` DATETIME NULL,
+                `updated_at` DATETIME NULL
+            )";
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql_cookie);
     }
 }
 
@@ -77,7 +89,9 @@ register_deactivation_hook(__FILE__, 'delete_db');
 function delete_db() {
     global $wpdb;
     $cookie_table_name = $wpdb->prefix. 'refus_cookie';
-    $wpdb->query("DROP TABLE IF EXISTS $cookie_table_name");
+    $cookie_table_name_config = $wpdb->prefix . 'refus_cookie_config';
+    $wpdb->query("DROP TABLE IF EXISTS {$cookie_table_name}");
+    $wpdb->query("DROP TABLE IF EXISTS {$cookie_table_name_config}");
 }
 
 add_action('wp_enqueue_scripts', 'cookie_custom_scripts');

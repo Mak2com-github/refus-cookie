@@ -26,7 +26,7 @@ if(!class_exists('My_Class')) {
 
         public function getAllSettings()
         {
-            $query = $this->wpdb->get_results("SELECT * FROM $this->data_table");
+            $query = $this->wpdb->get_results("SELECT * FROM $this->settings_table");
             return $query;
         }
 

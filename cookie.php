@@ -56,7 +56,7 @@ function create_db() {
         $sql_cookie =
             "CREATE TABLE IF NOT EXISTS {$cookie_table_name_config} (
                 `id` BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-                `exclude_ip` VARCHAR(15) NOT NULL,
+                `settings_datas` JSON DEFAULT NULL,
                 `created_at` DATETIME NULL,
                 `updated_at` DATETIME NULL
             )";
@@ -109,6 +109,7 @@ function cookie_custom_scripts() {
 
 define('ROOTDIR', plugin_dir_path(__FILE__));
 require_once(ROOTDIR . 'cookie-settings.php');
+require_once(ROOTDIR . 'classes/RefusSettings.php');
 
 add_action( 'wp_ajax_update_data', 'update_data' );
 add_action( 'wp_ajax_nopriv_update_data', 'update_data' );

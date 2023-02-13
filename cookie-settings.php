@@ -14,6 +14,18 @@ function refus_cookie_settings() {
     ?>
     <div class="wrap">
         <h1>Réglages</h1>
+        <div class="message_container">
+            <p>
+                <?php
+                if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
+                    echo $_SESSION['error_message'];
+                }
+                if (isset($_SESSION['success_message']) && !empty($_SESSION['success_message'])) {
+                    echo $_SESSION['success_message'];
+                }
+                ?>
+            </p>
+        </div>
         <div class="settings_container">
             <div class="settings_col_left">
                 <form method="post" action="admin.php?page=refus-cookie-settings">
@@ -40,7 +52,7 @@ function refus_cookie_settings() {
                         </tbody>
                     </table>
                     <p class="submit">
-                        <input type="submit" name="submit" id="submit" class="button button-primary" value="Ajouter">
+                        <input type="submit" name="add_settings" id="submit" class="button button-primary" value="Ajouter">
                     </p>
                 </form>
             </div>

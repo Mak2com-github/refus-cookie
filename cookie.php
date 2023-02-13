@@ -85,6 +85,14 @@ function cookie_custom_styles() {
     wp_register_style('style_cookie', plugins_url('/css/style.css', __FILE__));
 }
 
+add_action('admin_init', 'dbOperatorFunctions');
+function dbOperatorFunctions() {
+    if (isset($_POST['add_settings'])) {
+        $RefusSettings = new RefusSettings();
+        $RefusSettings->addSettingsData($_POST);
+    }
+}
+
 register_deactivation_hook(__FILE__, 'delete_db');
 function delete_db() {
     global $wpdb;

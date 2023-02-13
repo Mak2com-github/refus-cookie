@@ -14,26 +14,60 @@ function refus_cookie_settings() {
     ?>
     <div class="wrap">
         <h1>Réglages</h1>
-        <form method="post" action="admin.php?page=refus-cookie-settings">
-            <table class="form-table" role="presentation">
-                <tbody>
-                    <tr>
-                        <th scope="row">
-                            <label for="ip_settings">IP à exclure</label>
-                        </th>
-                        <td>
-                            <p>Ajouter une adresse IP à exclure pour que les évènements de refus des cookies ne soit pas comptabilisés pour cette adresse IP</p>
-                            <input type="text" name="ip_settings" id="ipSettings" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx">
-                        </td>
-                        <th>
-                            <p class="submit">
-                                <input type="submit" name="submit" id="submit" class="button button-primary" value="Ajouter">
-                            </p>
-                        </th>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
+        <div class="settings_container">
+            <div class="settings_col_left">
+                <form method="post" action="admin.php?page=refus-cookie-settings">
+                    <table class="form-table" role="presentation">
+                        <tbody>
+                        <tr>
+                            <th scope="row">
+                                <label for="ip_settings">IP à exclure</label>
+                            </th>
+                            <td>
+                                <p>Ajouter une adresse IP à exclure pour que les évènements de refus des cookies ne soit pas comptabilisés pour cette adresse IP</p>
+                                <input type="text" name="ip_settings" id="ipSettings" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <label for="element_id">Élement à cibler</label>
+                            </th>
+                            <td>
+                                <p>L'identifiant unique de l'élément sur lequel l'évènement au click doit être attribué</p>
+                                <input type="text" name="element_id" id="elementId" pattern="[a-zA-Z0-9]+" placeholder="elementId" prefix="#">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p class="submit">
+                        <input type="submit" name="submit" id="submit" class="button button-primary" value="Ajouter">
+                    </p>
+                </form>
+            </div>
+            <div class="settings_col_right">
+                <table class="wp-list-table widefat fixed striped table-view-list">
+                    <thead>
+                        <tr>
+                            <th id="title" class="manage-column column-title column-primary sortable desc" scope="col">
+                                <p>Réglage</p>
+                            </th>
+                            <th id="value" class="manage-column column-title column-primary sortable desc" scope="col">
+                                <p>Valeur</p>
+                            </th>
+                            <th id="action" class="manage-column column-title column-primary sortable desc" scope="col">
+                                <p>Actions</p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="settingsList">
+                        <?php
+                        $Settings = new RefusSettings();
+                        var_dump($Settings->getAllSettings());
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>

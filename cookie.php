@@ -114,15 +114,6 @@ function dbOperatorFunctions() {
     }
 }
 
-register_deactivation_hook(__FILE__, 'delete_db');
-function delete_db() {
-    global $wpdb;
-    $cookie_table_name = $wpdb->prefix. 'refus_cookie';
-    $cookie_table_name_config = $wpdb->prefix . 'refus_cookie_config';
-    $wpdb->query("DROP TABLE IF EXISTS {$cookie_table_name}");
-    $wpdb->query("DROP TABLE IF EXISTS {$cookie_table_name_config}");
-}
-
 add_action('wp_enqueue_scripts', 'cookie_custom_scripts');
 function cookie_custom_scripts() {
     wp_enqueue_style('style_cookie_front');

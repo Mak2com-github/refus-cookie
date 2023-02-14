@@ -8,3 +8,12 @@
 .settings_container .settings_top .form-container {
     max-width: 25%;
 }
+
+.settings_container .settings_body {
+    display: flex;
+    flex-direction: revert;
+    justify-content: space-evenly;
+}
+.settings_container .settings_body .settings-body-section {
+    max-width: 45%;
+}

@@ -32,6 +32,16 @@ if(!class_exists('My_Class')) {
             return $query;
         }
 
+        public function getAllElements() {
+            $query = $this->wpdb->get_results("SELECT settings_datas->'$.targets' AS targets FROM $this->settings_table WHERE id = 1");
+            return $query;
+        }
+
+        public function getAllIps() {
+            $query = $this->wpdb->get_results("SELECT settings_datas->'$.ip_setting' AS ips FROM $this->settings_table WHERE id = 1");
+            return $query;
+        }
+
         public function addSettingsIP($datas) {
             if (isset($datas['setting_ip']) && !empty($datas['setting_ip'])) {
                 $row_id = $datas['settings_id'];

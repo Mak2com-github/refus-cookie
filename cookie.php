@@ -68,9 +68,11 @@ function create_db() {
 
         $defaults = array(
             'element_id' => "",
-            'ip_setting' => array(
-                'id'    =>  '0',
-                'ip'    =>  getUserIP(),
+            'ips_setting' => array(
+                'ips'   => array(
+                    'id'    =>  '0',
+                    'ip'    =>  getUserIP(),
+                ),
             ),
         );
 

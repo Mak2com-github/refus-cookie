@@ -53,78 +53,121 @@ function refus_cookie_settings() {
                         <p>L'identifiant unique de l'élément sur lequel l'évènement au click doit être attribué</p>
                         <input type="text" name="element_id" id="elementId" pattern="[a-zA-Z0-9]+" placeholder="elementId" prefix="#">
                     </div>
+                    <div class="form-row">
+                        <select name="target_type" id="targetType">
+                            <option value="">Type de sélecteur</option>
+                            <option value="class">Class "."</option>
+                            <option value="id">ID "#"</option>
+                        </select>
+                    </div>
                     <p class="submit">
                         <input type="submit" name="add_element" id="submit" class="button button-primary" value="Ajouter">
                     </p>
                 </form>
             </div>
             <div class="settings_body">
-                <table class="wp-list-table widefat fixed striped table-view-list">
-                    <thead>
+                <div class="section-left settings-body-section">
+                    <table class="wp-list-table widefat fixed striped table-view-list">
+                        <thead>
                         <tr>
                             <th id="title" class="manage-column column-title column-primary sortable desc" scope="col">
-                                <p>Réglage</p>
+                                <p>Adresses IP</p>
                             </th>
                             <th id="value" class="manage-column column-title column-primary sortable desc" scope="col">
                                 <p>Valeur</p>
                             </th>
-                            <th id="action" class="manage-column column-title column-primary sortable desc" scope="col">
-                                <p>Actions</p>
-                            </th>
                         </tr>
-                    </thead>
-                    <tbody id="settingsList">
+                        </thead>
+                        <tbody id="settingsList">
                         <?php
                         $Settings = new RefusSettings();
-                        $Settings = $Settings->getAllSettings();
-                        foreach ($Settings as $setting) {
-                            $settingsDatas = json_decode($setting->settings_datas);
-                            var_dump($settingsDatas);
-                            if ($settingsDatas->ip_setting) {
-                            ?>
-                            <tr class="hentry entry">
-                                <th class="title column-title has-row-actions column-primary">
-                                    <p>Adresse IP</p>
-                                </th>
-                                <th class="value column-value has-row-actions column-primary">
-                                    <p><?= $settingsDatas->ip_setting ?></p>
-                                </th>
-                                <th class="title column-title has-row-actions column-primary">
-                                    <form method="post" action="admin.php?page=refus-cookie-settings">
-                                        <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
-                                        <input type="button" value="modifier" name="edit">
-                                        <input type="button" value="supprimer" name="delete">
-                                    </form>
-                                </th>
-                            </tr>
-
-                            <?php
-                            }
-                            if ($settingsDatas->element_id) {
-                            ?>
+                        $IpAdresses = $Settings->getAllIps();
+                        foreach ($IpAdresses as $Ips) {
+                            $ips = json_decode($Ips->ips);
+                            foreach ((array)$ips as $ip) {
+                                ?>
                                 <tr class="hentry entry">
-                                    <th class="title column-title has-row-actions column-primary">
-                                        <p>Éléments ciblés</p>
+                                    <th class="value column-value has-row-actions column-primary">
+                                        <?php
+                                        if ($ip->ip) {
+                                            ?>
+                                            <p><?= $ip->ip ?></p>
+                                            <?php
+                                        }
+                                        ?>
                                     </th>
                                     <th class="value column-value has-row-actions column-primary">
-                                        <p>
-                                            <?= $settingsDatas->element_id ?>
-                                        </p>
-                                    </th>
-                                    <th class="title column-title has-row-actions column-primary">
-                                        <form method="post" action="admin.php?page=refus-cookie-settings">
-                                            <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
+                                        <form action="" method="post">
+                                            <input type="hidden" name="target_id" value="<?= $ip->id ?>">
                                             <input type="button" value="modifier" name="edit">
                                             <input type="button" value="supprimer" name="delete">
                                         </form>
                                     </th>
                                 </tr>
-                            <?php
+                                <?php
                             }
                         }
                         ?>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-right settings-body-section">
+                    <table class="wp-list-table widefat fixed striped table-view-list">
+                        <thead>
+                        <tr>
+                            <th class="manage-column column-title column-primary sortable desc title" scope="col">
+                                <p>Cibles</p>
+                            </th>
+                            <th class="manage-column column-title column-primary sortable desc type" scope="col">
+                                <p>Type</p>
+                            </th>
+                            <th class="manage-column column-title column-primary sortable desc actions" scope="col">
+                                <p>Actions</p>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="settingsList">
+                        <?php
+                        $Settings = new RefusSettings();
+                        $Targets = $Settings->getAllElements();
+                        foreach ($Targets as $target) {
+                            $elements = json_decode($target->targets);
+                            foreach ((array)$elements as $element) {
+                                ?>
+                                <tr class="hentry entry">
+                                    <th class="value column-value has-row-actions column-primary">
+                                    <?php
+                                    if ($element->element) {
+                                        ?>
+                                        <p><?= $element->element ?></p>
+                                        <?php
+                                    }
+                                    ?>
+                                    </th>
+                                    <th class="value column-value has-row-actions column-primary">
+                                        <?php
+                                        if ($element->type) {
+                                            ?>
+                                            <p><?php if ($element->type === "class") { echo "Classe"; } else { echo "ID"; } ?></p>
+                                            <?php
+                                        }
+                                        ?>
+                                    </th>
+                                    <th class="value column-value has-row-actions column-primary">
+                                        <form action="" method="post">
+                                            <input type="hidden" name="target_id" value="<?= $element->id ?>">
+                                            <input type="button" value="modifier" name="edit">
+                                            <input type="button" value="supprimer" name="delete">
+                                        </form>
+                                    </th>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

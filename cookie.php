@@ -62,6 +62,23 @@ function create_db() {
             )";
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_cookie);
+
+        $created_at = date('Y-m-d H:i:s');
+        $updated_at = date('Y-m-d H:i:s');
+
+        $defaults = array(
+            'element_id' => "",
+            'ip_setting' => array(
+                'id'    =>  '0',
+                'ip'    =>  getUserIP(),
+            ),
+        );
+
+        $wpdb->insert($cookie_table_name, array(
+            'settings_datas' => json_encode($defaults),
+            'created_at' => $created_at,
+            'updated_at' => $updated_at,
+        ));
     }
 }
 
@@ -87,9 +104,13 @@ function cookie_custom_styles() {
 
 add_action('admin_init', 'dbOperatorFunctions');
 function dbOperatorFunctions() {
-    if (isset($_POST['add_settings'])) {
+    if (isset($_POST['add_ip'])) {
         $RefusSettings = new RefusSettings();
-        $RefusSettings->addSettingsData($_POST);
+        $RefusSettings->addSettingsIP($_POST);
+    }
+    if (isset($_POST['add_element'])) {
+        $RefusSettings = new RefusSettings();
+        $RefusSettings->addSettingsElement($_POST);
     }
 }
 

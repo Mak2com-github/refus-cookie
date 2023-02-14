@@ -1,3 +1,10 @@
-.config {
-    /*background-color: black;*/
+.settings_container .settings_top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.settings_container .settings_top .form-container,
+.settings_container .settings_top .form-container {
+    max-width: 25%;
 }

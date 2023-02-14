@@ -8,13 +8,16 @@ function refus_cookie_settings() {
     global $wpdb;
     $cookie_table_name_config = $wpdb->prefix . 'refus_cookie_config';
 
-    $created_at = date('Y-m-d H:i:s');
-    $updated_at = date('Y-m-d H:i:s');
+    $settingsID = new RefusSettings();
+    $settingsID = $settingsID->getAllSettings();
+    $settingsID = json_decode(json_encode($settingsID[0]), true);
+    $settingsID = $settingsID['id'];
 
     ?>
     <div class="wrap">
         <h1>Réglages</h1>
         <div class="message_container">
+            <p>Votre adresse IP actuelle : <span><?= getUserIP() ?></span></p>
             <p>
                 <?php
                 if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
@@ -27,36 +30,35 @@ function refus_cookie_settings() {
             </p>
         </div>
         <div class="settings_container">
-            <div class="settings_col_left">
-                <form method="post" action="admin.php?page=refus-cookie-settings">
-                    <table class="form-table" role="presentation">
-                        <tbody>
-                        <tr>
-                            <th scope="row">
-                                <label for="ip_settings">IP à exclure</label>
-                            </th>
-                            <td>
-                                <p>Ajouter une adresse IP à exclure pour que les évènements de refus des cookies ne soit pas comptabilisés pour cette adresse IP</p>
-                                <input type="text" name="ip_settings" id="ipSettings" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <label for="element_id">Élement à cibler</label>
-                            </th>
-                            <td>
-                                <p>L'identifiant unique de l'élément sur lequel l'évènement au click doit être attribué</p>
-                                <input type="text" name="element_id" id="elementId" pattern="[a-zA-Z0-9]+" placeholder="elementId" prefix="#">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="settings_top">
+                <form class="form-left form-container" method="post" action="admin.php?page=refus-cookie-settings">
+                    <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
+                    <div class="form-row">
+                        <label for="ip_settings">IP à exclure</label>
+                    </div>
+                    <div class="form-row">
+                        <p>Ajouter une adresse IP à exclure pour que les évènements de refus des cookies ne soit pas comptabilisés pour cette adresse IP</p>
+                        <input type="text" name="setting_ip" id="ipSettings" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx">
+                    </div>
                     <p class="submit">
-                        <input type="submit" name="add_settings" id="submit" class="button button-primary" value="Ajouter">
+                        <input type="submit" name="add_ip" id="submit" class="button button-primary" value="Ajouter">
+                    </p>
+                </form>
+                <form class="form-right form-container" method="post" action="admin.php?page=refus-cookie-settings">
+                    <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
+                    <div class="form-row">
+                        <label for="element_id">Élement à cibler</label>
+                    </div>
+                    <div class="form-row">
+                        <p>L'identifiant unique de l'élément sur lequel l'évènement au click doit être attribué</p>
+                        <input type="text" name="element_id" id="elementId" pattern="[a-zA-Z0-9]+" placeholder="elementId" prefix="#">
+                    </div>
+                    <p class="submit">
+                        <input type="submit" name="add_element" id="submit" class="button button-primary" value="Ajouter">
                     </p>
                 </form>
             </div>
-            <div class="settings_col_right">
+            <div class="settings_body">
                 <table class="wp-list-table widefat fixed striped table-view-list">
                     <thead>
                         <tr>
@@ -74,7 +76,52 @@ function refus_cookie_settings() {
                     <tbody id="settingsList">
                         <?php
                         $Settings = new RefusSettings();
-                        var_dump($Settings->getAllSettings());
+                        $Settings = $Settings->getAllSettings();
+                        foreach ($Settings as $setting) {
+                            $settingsDatas = json_decode($setting->settings_datas);
+                            var_dump($settingsDatas);
+                            if ($settingsDatas->ip_setting) {
+                            ?>
+                            <tr class="hentry entry">
+                                <th class="title column-title has-row-actions column-primary">
+                                    <p>Adresse IP</p>
+                                </th>
+                                <th class="value column-value has-row-actions column-primary">
+                                    <p><?= $settingsDatas->ip_setting ?></p>
+                                </th>
+                                <th class="title column-title has-row-actions column-primary">
+                                    <form method="post" action="admin.php?page=refus-cookie-settings">
+                                        <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
+                                        <input type="button" value="modifier" name="edit">
+                                        <input type="button" value="supprimer" name="delete">
+                                    </form>
+                                </th>
+                            </tr>
+
+                            <?php
+                            }
+                            if ($settingsDatas->element_id) {
+                            ?>
+                                <tr class="hentry entry">
+                                    <th class="title column-title has-row-actions column-primary">
+                                        <p>Éléments ciblés</p>
+                                    </th>
+                                    <th class="value column-value has-row-actions column-primary">
+                                        <p>
+                                            <?= $settingsDatas->element_id ?>
+                                        </p>
+                                    </th>
+                                    <th class="title column-title has-row-actions column-primary">
+                                        <form method="post" action="admin.php?page=refus-cookie-settings">
+                                            <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
+                                            <input type="button" value="modifier" name="edit">
+                                            <input type="button" value="supprimer" name="delete">
+                                        </form>
+                                    </th>
+                                </tr>
+                            <?php
+                            }
+                        }
                         ?>
                     </tbody>
                 </table>
@@ -86,17 +133,4 @@ function refus_cookie_settings() {
         $('#ipSettings').mask('099.099.099.099');
     </script>
     <?php
-
-    if (isset($_POST['ip_settings']) && !empty($_POST['ip_settings'])) {
-        // Prépare la requete
-        $sql = $wpdb->prepare(
-            "INSERT INTO {$cookie_table_name_config}
-                        (exclude_ip, created_at, updated_at) VALUES (%s,%s,%s)",
-            $_POST['ip_settings'],
-            $created_at,
-            $updated_at
-        );
-        // Execution de la requete
-        $wpdb->query($sql);
-    }
 }

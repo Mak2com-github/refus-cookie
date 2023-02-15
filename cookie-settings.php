@@ -34,11 +34,13 @@ function refus_cookie_settings() {
                 <form class="form-left form-container" method="post" action="admin.php?page=refus-cookie-settings">
                     <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
                     <div class="form-row">
-                        <label for="ip_settings">IP à exclure</label>
+                        <label for="setting_name">Ajouter un nom à cette adresse IP</label>
+                        <input type="text" name="setting_name" id="SettingsName" placeholder="Agence" required>
                     </div>
                     <div class="form-row">
+                        <label for="setting_ip">IP à exclure</label>
                         <p>Ajouter une adresse IP à exclure pour que les évènements de refus des cookies ne soit pas comptabilisés pour cette adresse IP</p>
-                        <input type="text" name="setting_ip" id="ipSettings" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx">
+                        <input type="text" name="setting_ip" id="SettingsIp" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx" required>
                     </div>
                     <p class="submit">
                         <input type="submit" name="add_ip" id="submit" class="button button-primary" value="Ajouter">
@@ -51,10 +53,10 @@ function refus_cookie_settings() {
                     </div>
                     <div class="form-row">
                         <p>L'identifiant unique de l'élément sur lequel l'évènement au click doit être attribué</p>
-                        <input type="text" name="element_id" id="elementId" pattern="[a-zA-Z0-9]+" placeholder="elementId" prefix="#">
+                        <input type="text" name="element_id" id="elementId" pattern="[a-zA-Z0-9]+" placeholder="elementId" required>
                     </div>
                     <div class="form-row">
-                        <select name="target_type" id="targetType">
+                        <select name="target_type" id="targetType" required>
                             <option value="">Type de sélecteur</option>
                             <option value="class">Class "."</option>
                             <option value="id">ID "#"</option>
@@ -70,10 +72,13 @@ function refus_cookie_settings() {
                     <table class="wp-list-table widefat fixed striped table-view-list">
                         <thead>
                         <tr>
-                            <th id="title" class="manage-column column-title column-primary sortable desc" scope="col">
+                            <th class="manage-column column-title column-primary sortable desc" scope="col">
+                                <p>Nom</p>
+                            </th>
+                            <th class="manage-column column-title column-primary sortable desc" scope="col">
                                 <p>Adresses IP</p>
                             </th>
-                            <th id="value" class="manage-column column-title column-primary sortable desc" scope="col">
+                            <th class="manage-column column-title column-primary sortable desc" scope="col">
                                 <p>Valeur</p>
                             </th>
                         </tr>
@@ -81,30 +86,56 @@ function refus_cookie_settings() {
                         <tbody id="settingsList">
                         <?php
                         $Settings = new RefusSettings();
-                        $IpAdresses = $Settings->getAllIps();
-                        foreach ($IpAdresses as $Ips) {
-                            $ips = json_decode($Ips->ips);
-                            foreach ((array)$ips as $ip) {
-                                ?>
-                                <tr class="hentry entry">
-                                    <th class="value column-value has-row-actions column-primary">
-                                        <?php
-                                        if ($ip->ip) {
-                                            ?>
-                                            <p><?= $ip->ip ?></p>
+                        $Ips = $Settings->getAllIpsAlt();
+                        //$Ips = json_decode(json_encode($Ips, true), true);
+                        foreach ((array)$Ips as $Ip) {
+                            $Ip = json_decode($Ip, true);
+                            var_dump($Ip);
+                            foreach ((array)$Ip as $ip) {
+                                $ip = json_decode($ip);
+                                foreach ((array)$ip as $data) {
+                                    $datas = (array)$data;
+                                    foreach ($datas as $key => $element) {
+                                        $name = $element[0]->name;
+                                        $ip = $element[0]->ip;
+                                    ?>
+                                    <tr class="hentry entry">
+                                        <th class="value column-value has-row-actions column-primary">
                                             <?php
-                                        }
-                                        ?>
-                                    </th>
-                                    <th class="value column-value has-row-actions column-primary">
-                                        <form action="" method="post">
-                                            <input type="hidden" name="target_id" value="<?= $ip->id ?>">
-                                            <input type="button" value="modifier" name="edit">
-                                            <input type="button" value="supprimer" name="delete">
-                                        </form>
-                                    </th>
-                                </tr>
-                                <?php
+                                            if ($name) {
+                                                ?>
+                                                <p><?= $name ?></p>
+                                                <?php
+                                            }
+                                            ?>
+                                        </th>
+                                        <th class="value column-value has-row-actions column-primary">
+                                            <?php
+                                            if ($ip) {
+                                                ?>
+                                                <p><?= $ip ?></p>
+                                                <?php
+                                            }
+                                            ?>
+                                        </th>
+                                        <th class="value column-value has-row-actions column-primary">
+                                            <form action="" method="post">
+                                                <input type="hidden" name="settings_ip_name" value="<?= $name ?>">
+                                                <input type="hidden" name="settings_ip_id" value="<?= $settingsID ?>">
+                                                <input type="hidden" name="settings_ip" value="<?= $ip ?>">
+                                                <input type="submit" value="modifier" name="ip_edit">
+                                            </form>
+                                            <form action="" method="post">
+                                                <input type="hidden" name="settings_ip_name" value="<?= $name ?>">
+                                                <input type="hidden" name="settings_ip_id" value="<?= $settingsID ?>">
+                                                <input type="hidden" name="settings_ip" value="<?= $ip ?>">
+                                                <input type="submit" value="supprimer" name="ip_delete">
+                                            </form>
+                                        </th>
+                                    </tr>
+                                    <?php
+                                    }
+                                }
                             }
                         }
                         ?>
@@ -155,9 +186,14 @@ function refus_cookie_settings() {
                                     </th>
                                     <th class="value column-value has-row-actions column-primary">
                                         <form action="" method="post">
+                                            <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
                                             <input type="hidden" name="target_id" value="<?= $element->id ?>">
-                                            <input type="button" value="modifier" name="edit">
-                                            <input type="button" value="supprimer" name="delete">
+                                            <input type="button" value="modifier" name="target_edit">
+                                        </form>
+                                        <form action="" method="post">
+                                            <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
+                                            <input type="hidden" name="target_id" value="<?= $element->id ?>">
+                                            <input type="button" value="supprimer" name="target_delete">
                                         </form>
                                     </th>
                                 </tr>

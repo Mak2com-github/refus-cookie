@@ -38,25 +38,55 @@ if(!class_exists('My_Class')) {
         }
 
         public function getAllIps() {
-            $query = $this->wpdb->get_results("SELECT settings_datas->'$.ip_setting' AS ips FROM $this->settings_table WHERE id = 1");
+            $query = $this->wpdb->get_results("SELECT settings_datas->'$.ips' AS ips FROM $this->settings_table WHERE id = 1");
+            return $query[0];
+        }
+
+        public function getAllIpsAlt() {
+            $query = $this->wpdb->get_var("SELECT settings_datas->'$.ips' AS ips FROM $this->settings_table WHERE id = 1");
             return $query;
         }
 
         public function addSettingsIP($datas) {
             if (isset($datas['setting_ip']) && !empty($datas['setting_ip'])) {
                 $row_id = $datas['settings_id'];
-                $ip_settings = htmlspecialchars($datas['setting_ip'],ENT_NOQUOTES,'UTF-8', true);
-                $ip_settings = json_encode($ip_settings);
+                $ip_address = htmlspecialchars($datas['setting_ip'],ENT_NOQUOTES,'UTF-8', true);
 
-                $this->wpdb->query(
-                    $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = JSON_SET(settings_datas, '$.ip_setting', $ip_settings) WHERE id = $row_id")
-                );
+                if (isset($datas['setting_name']) && !empty($datas['setting_name'])) {
+                    $ip_name = $datas['setting_name'];
+                    $ip_name = htmlspecialchars($ip_name, ENT_QUOTES,'UTF-8', true);
 
-                if ($this->wpdb->last_error) {
-                    $_SESSION['error_message'] = "Erreur lors de l'insertion des données. <br>Erreur : " . $this->wpdb->last_error;
+                    $existing = $this->getAllIps();
+                    $existing = (array)$existing;
+                    $existing = json_decode($existing['ips']);
+                    $existing = (array)$existing;
+
+                    $formatedDatas = array(
+                        $ip_name => [
+                            array(
+                                "ip" => $ip_address,
+                                "name"  =>  $ip_name
+                            )
+                        ]
+                    );
+                    array_push($existing, $formatedDatas);
+                    $updated = $existing;
+                    $updated = json_encode($updated);
+
+                    $this->wpdb->query(
+                        $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = JSON_SET(settings_datas, '$.ips', '$updated') WHERE id = $row_id")
+                    );
+
+                    if ($this->wpdb->last_error) {
+                        return $_SESSION['error_message'] = "Erreur lors de l'insertion des données. <br>Erreur : " . $this->wpdb->last_error;
+                    } else {
+                        return $_SESSION['success_message'] = "Les données ont bien été enregistrées";
+                    }
                 } else {
-                    $_SESSION['success_message'] = "Les données ont bien été enregistrées";
+                    return $_SESSION['success_message'] = "Le champ Nom n'est pas renseigné ou vide";
                 }
+            } else {
+                return $_SESSION['success_message'] = "Le champ de l'adresse IP n'est pas renseignée ou vide";
             }
         }
 
@@ -72,6 +102,42 @@ if(!class_exists('My_Class')) {
                     $_SESSION['error_message'] = "Erreur lors de l'insertion des données. <br>Erreur : " . $this->wpdb->last_error;
                 } else {
                     $_SESSION['success_message'] = "Les données ont bien été enregistrées";
+                }
+            }
+        }
+
+        public function deleteSettingsIp($datas) {
+            if (isset($datas) && !empty($datas)) {
+                $ip = $datas['settings_ip'];
+                $row_id = $datas['settings_ip_id'];
+                $pattern = "/^[0-9\.]+$/";
+
+                // Test the input string against the pattern
+                if (preg_match($pattern, $ip)) {
+                    $existing = $this->getAllIpsAlt();
+                    $existing = json_decode(json_decode($existing, true), true);
+                    var_dump($existing);
+                    foreach ($existing as $key => $value) {
+                        if (isset($value[$datas['settings_ip_name']])) {
+                            unset($existing[$key]);
+                        }
+                    }
+
+                    $updated = json_encode($existing);
+
+//                    $this->wpdb->query(
+//                        $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = JSON_SET(settings_datas, '$.ips', '$updated') WHERE id = $row_id")
+//                    );
+
+                    if ($this->wpdb->last_error) {
+                        $_SESSION['success_message'] = "There is an error when execute the sql request: ". $this->wpdb->last_error;
+                    } else {
+                        $_SESSION['success_message'] = "Informations has been correctly updated !";
+                    }
+
+                } else {
+                    // The input string contains other characters
+                    $_SESSION['success_message'] = "The input string contains other characters unauthorized in ip field";
                 }
             }
         }

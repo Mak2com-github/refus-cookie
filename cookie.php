@@ -106,13 +106,15 @@ function cookie_custom_styles() {
 
 add_action('admin_init', 'dbOperatorFunctions');
 function dbOperatorFunctions() {
+    $RefusSettings = new RefusSettings();
     if (isset($_POST['add_ip'])) {
-        $RefusSettings = new RefusSettings();
         $RefusSettings->addSettingsIP($_POST);
     }
     if (isset($_POST['add_element'])) {
-        $RefusSettings = new RefusSettings();
         $RefusSettings->addSettingsElement($_POST);
+    }
+    if (isset($_POST['ip_delete'])) {
+        $RefusSettings->deleteSettingsIp($_POST);
     }
 }
 

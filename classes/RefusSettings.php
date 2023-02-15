@@ -38,7 +38,15 @@ if(!class_exists('My_Class')) {
         }
 
         public function getAllIps() {
-            $query = $this->wpdb->get_var("SELECT settings_datas->'$.ips' AS ips FROM $this->settings_table WHERE id = 1");
+
+            $query = $this->wpdb->get_results("SELECT JSON_EXTRACT(settings_datas, '$.ips') AS ips FROM $this->settings_table WHERE id = 1");
+            //$json_datas = json_decode($query, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                echo 'Error decoding : '.json_last_error_msg();
+            } else {
+                echo "no errors".$json_datas;
+            }
+            var_dump($query);
             return $query;
         }
 

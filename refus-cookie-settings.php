@@ -86,57 +86,45 @@ function refus_cookie_settings() {
                         <tbody id="settingsList">
                         <?php
                         $Settings = new RefusSettings();
-                        $Ips = $Settings->getAllIpsAlt();
-                        //$Ips = json_decode(json_encode($Ips, true), true);
-                        foreach ((array)$Ips as $Ip) {
-                            $Ip = json_decode($Ip, true);
-                            var_dump($Ip);
-                            foreach ((array)$Ip as $ip) {
-                                $ip = json_decode($ip);
-                                foreach ((array)$ip as $data) {
-                                    $datas = (array)$data;
-                                    foreach ($datas as $key => $element) {
-                                        $name = $element[0]->name;
-                                        $ip = $element[0]->ip;
-                                    ?>
-                                    <tr class="hentry entry">
-                                        <th class="value column-value has-row-actions column-primary">
-                                            <?php
-                                            if ($name) {
-                                                ?>
-                                                <p><?= $name ?></p>
-                                                <?php
-                                            }
-                                            ?>
-                                        </th>
-                                        <th class="value column-value has-row-actions column-primary">
-                                            <?php
-                                            if ($ip) {
-                                                ?>
-                                                <p><?= $ip ?></p>
-                                                <?php
-                                            }
-                                            ?>
-                                        </th>
-                                        <th class="value column-value has-row-actions column-primary">
-                                            <form action="" method="post">
-                                                <input type="hidden" name="settings_ip_name" value="<?= $name ?>">
-                                                <input type="hidden" name="settings_ip_id" value="<?= $settingsID ?>">
-                                                <input type="hidden" name="settings_ip" value="<?= $ip ?>">
-                                                <input type="submit" value="modifier" name="ip_edit">
-                                            </form>
-                                            <form action="" method="post">
-                                                <input type="hidden" name="settings_ip_name" value="<?= $name ?>">
-                                                <input type="hidden" name="settings_ip_id" value="<?= $settingsID ?>">
-                                                <input type="hidden" name="settings_ip" value="<?= $ip ?>">
-                                                <input type="submit" value="supprimer" name="ip_delete">
-                                            </form>
-                                        </th>
-                                    </tr>
+                        $Ips = $Settings->getAllIps();
+                        $Ips = json_decode($Ips, true);
+                        foreach ($Ips as $Ip) {
+                            ?>
+                            <tr class="hentry entry">
+                                <th class="value column-value has-row-actions column-primary">
                                     <?php
+                                    if ($Ip['name']) {
+                                        ?>
+                                        <p><?= $Ip['name'] ?></p>
+                                        <?php
                                     }
-                                }
-                            }
+                                    ?>
+                                </th>
+                                <th class="value column-value has-row-actions column-primary">
+                                    <?php
+                                    if ($Ip['ip']) {
+                                        ?>
+                                        <p><?= $Ip['ip'] ?></p>
+                                        <?php
+                                    }
+                                    ?>
+                                </th>
+                                <th class="value column-value has-row-actions column-primary">
+                                    <form action="" method="post">
+                                        <input type="hidden" name="settings_ip_name" value="<?= $Ip['name'] ?>">
+                                        <input type="hidden" name="settings_ip_id" value="<?= $settingsID ?>">
+                                        <input type="hidden" name="settings_ip" value="<?= $Ip['ip'] ?>">
+                                        <input type="submit" value="modifier" name="ip_edit">
+                                    </form>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="settings_ip_name" value="<?= $Ip['name'] ?>">
+                                        <input type="hidden" name="settings_ip_id" value="<?= $settingsID ?>">
+                                        <input type="hidden" name="settings_ip" value="<?= $Ip['ip'] ?>">
+                                        <input type="submit" value="supprimer" name="ip_delete">
+                                    </form>
+                                </th>
+                            </tr>
+                            <?php
                         }
                         ?>
                         </tbody>

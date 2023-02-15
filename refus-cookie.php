@@ -84,6 +84,12 @@ function create_db() {
         $wpdb->query(
             $wpdb->prepare("INSERT INTO $cookie_table_name_config (settings_datas) VALUES (%s)", $defaults)
         );
+        $wpdb->query(
+            $wpdb->prepare("UPDATE $cookie_table_name_config SET settings_datas = JSON_SET(settings_datas, '$', %s) WHERE id = %d",
+                $defaults,
+                1
+            )
+        );
     }
 }
 

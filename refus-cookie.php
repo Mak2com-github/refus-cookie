@@ -67,13 +67,18 @@ function create_db() {
         $updated_at = date('Y-m-d H:i:s');
 
         $defaults = array(
-            'element_id' => "",
-            'ips_setting' => array(
-                'ips'   => array(
-                    'id'    =>  '0',
+            'ips'   => array(
+                'Agence' => array(
                     'ip'    =>  getUserIP(),
-                ),
+                    'name'  =>  'Agence'
+                )
             ),
+            'targets'   =>  array(
+                'cookieBtn' =>  array(
+                    'type'  =>  'id',
+                    'element'   =>  'cookieBtn'
+                )
+            )
         );
 
         $wpdb->insert($cookie_table_name_config, array(

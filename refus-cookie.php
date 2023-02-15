@@ -80,9 +80,9 @@ function create_db() {
                 )
             )
         );
-
+        $defaults = json_encode($defaults);
         $wpdb->query(
-            $wpdb->prepare("INSERT $cookie_table_name_config (settings_datas) VALUES (%s)", json_encode($defaults))
+            $wpdb->prepare("INSERT $cookie_table_name_config (settings_datas) VALUES '$defaults'")
         );
     }
 }

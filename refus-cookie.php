@@ -144,8 +144,8 @@ function rc_custom_scripts() {
     );
 }
 
-require_once(__DIR__ . 'refus-cookie-settings.php');
-require_once(__DIR__ . 'classes/RefusSettings.php');
+require_once __DIR__ . '/refus-cookie-settings.php';
+require_once __DIR__ . '/classes/RefusSettings.php';
 
 add_action( 'wp_ajax_update_data', 'rc_update_data' );
 add_action( 'wp_ajax_nopriv_update_data', 'rc_update_data' );

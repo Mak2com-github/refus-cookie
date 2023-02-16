@@ -46,6 +46,15 @@ if(!class_exists('My_Class')) {
             return $queryDatas['ips'];
         }
 
+        public function getAllTargets() {
+            $query = $this->wpdb->get_var("SELECT settings_datas FROM $this->settings_table WHERE id = 1");
+            $queryDatas = json_decode($query, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return 'Error decoding : '.json_last_error_msg();
+            }
+            return $queryDatas['targets'];
+        }
+
         public function getJSONDatas() {
             $query = $this->wpdb->get_var("SELECT settings_datas FROM $this->settings_table WHERE id = 1");
             $queryDatas = json_decode($query, true);

@@ -130,6 +130,7 @@ function dbOperatorFunctions() {
 
 add_action('wp_enqueue_scripts', 'cookie_custom_scripts');
 function cookie_custom_scripts() {
+    $settings = new RefusSettings();
     wp_enqueue_style('style_cookie_front');
     wp_register_style('style_cookie_front', plugins_url('/css/style_front.css', __FILE__));
     wp_enqueue_script('cookie_js', plugins_url('/js/main.js', __FILE__) , array('jquery'), false, true);
@@ -137,6 +138,8 @@ function cookie_custom_scripts() {
         array(
             'home_url'      => home_url(),
             'visitor_ip'    => getUserIP(),
+            'registered_ips'    =>  $settings->getAllIps(),
+            'registered_targets'    =>  $settings->getAllTargets(),
         )
     );
 }

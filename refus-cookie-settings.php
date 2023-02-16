@@ -14,7 +14,7 @@ function refus_cookie_settings() {
     $settingsID = $settingsID['id'];
 
     ?>
-    <div class="wrap">
+    <div class="wrap refus-cookie-container">
         <h1>Réglages</h1>
         <div class="information_container">
             <p>Votre adresse IP actuelle : <span><?= getUserIP() ?></span></p>

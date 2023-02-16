@@ -1,12 +1,12 @@
-.toplevel_page_refus-cookie-settings #wpbody-content .wrap h1 {
+.refus-cookie-container #wpbody-content .wrap h1 {
     font-size: 40px;
     font-weight: 800;
 }
-.toplevel_page_refus-cookie-settings #wpbody-content .wrap .information_container p {
+.refus-cookie-container #wpbody-content .wrap .information_container p {
     font-size: 16px;
     font-weight: 400;
 }
-.toplevel_page_refus-cookie-settings #wpbody-content .wrap .information_container p span {
+.refus-cookie-container #wpbody-content .wrap .information_container p span {
     background-color: limegreen;
     padding: 0 9px 2px 9px;
     font-size: 16px;

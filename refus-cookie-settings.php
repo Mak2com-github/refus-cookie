@@ -188,7 +188,12 @@ function refus_cookie_settings() {
     </div>
 
     <script>
-        $('#ipSettings').mask('099.099.099.099');
+        const inputField = document.getElementById("SettingsIp")
+        inputField.addEventListener("input", function(event) {
+            const value = event.target.value.replace(/\D/g, '') // remove non-digit characters
+            const maskedValue = value.replace(/(\d{1,3})(\d{1,3})?(\d{1,3})?(\d{1,3})?/, '$1.$2.$3.$4') // format as IP address
+            event.target.value = maskedValue
+        })
     </script>
     <?php
 }

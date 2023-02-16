@@ -16,8 +16,10 @@ function refus_cookie_settings() {
     ?>
     <div class="wrap">
         <h1>Réglages</h1>
-        <div class="message_container">
+        <div class="information_container">
             <p>Votre adresse IP actuelle : <span><?= getUserIP() ?></span></p>
+        </div>
+        <div class="message_container">
             <p>
                 <?php
                 if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
@@ -32,14 +34,15 @@ function refus_cookie_settings() {
         <div class="settings_container">
             <div class="settings_top">
                 <form class="form-left form-container" method="post" action="admin.php?page=refus-cookie-settings">
+                    <h2>Ajouter une IP</h2>
+                    <p>Ajouter une adresse IP à exclure pour que les évènements de refus des cookies ne soit pas comptabilisés pour cette adresse IP</p>
                     <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
                     <div class="form-row">
-                        <label for="setting_name">Ajouter un nom à cette adresse IP</label>
+                        <label for="setting_name">Nom de l'IP</label>
                         <input type="text" name="setting_name" id="SettingsName" placeholder="Agence" required>
                     </div>
                     <div class="form-row">
                         <label for="setting_ip">IP à exclure</label>
-                        <p>Ajouter une adresse IP à exclure pour que les évènements de refus des cookies ne soit pas comptabilisés pour cette adresse IP</p>
                         <input type="text" name="setting_ip" id="SettingsIp" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx" required>
                     </div>
                     <p class="submit">
@@ -47,15 +50,15 @@ function refus_cookie_settings() {
                     </p>
                 </form>
                 <form class="form-right form-container" method="post" action="admin.php?page=refus-cookie-settings">
+                    <h2>Ajouter un Element à cibler</h2>
+                    <p>Ajouter un identifiant du bouton à cibler pour déclencher l'évènement de refus des cookies</p>
                     <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
                     <div class="form-row">
-                        <label for="element_id">Élement à cibler</label>
+                        <label for="target_name">Élement à cibler</label>
+                        <input type="text" name="target_name" id="elementId" pattern="[a-zA-Z0-9_-]+" placeholder="elementId" required>
                     </div>
                     <div class="form-row">
-                        <p>L'identifiant unique de l'élément sur lequel l'évènement au click doit être attribué</p>
-                        <input type="text" name="element_id" id="elementId" pattern="[a-zA-Z0-9]+" placeholder="elementId" required>
-                    </div>
-                    <div class="form-row">
+                        <label for="target_type">Type d'élément</label>
                         <select name="target_type" id="targetType" required>
                             <option value="">Type de sélecteur</option>
                             <option value="class">Class "."</option>
@@ -63,7 +66,7 @@ function refus_cookie_settings() {
                         </select>
                     </div>
                     <p class="submit">
-                        <input type="submit" name="add_element" id="submit" class="button button-primary" value="Ajouter">
+                        <input type="submit" name="add_target" id="submit" class="button button-primary" value="Ajouter">
                     </p>
                 </form>
             </div>
@@ -111,15 +114,9 @@ function refus_cookie_settings() {
                                 <th class="value column-value has-row-actions column-primary">
                                     <form action="" method="post">
                                         <input type="hidden" name="settings_ip_name" value="<?= $Ip['name'] ?>">
-                                        <input type="hidden" name="settings_ip_id" value="<?= $settingsID ?>">
-                                        <input type="hidden" name="settings_ip" value="<?= $Ip['ip'] ?>">
-                                        <input type="submit" value="modifier" name="ip_edit">
-                                    </form>
-                                    <form action="" method="post">
-                                        <input type="hidden" name="settings_ip_name" value="<?= $Ip['name'] ?>">
                                         <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
                                         <input type="hidden" name="settings_ip" value="<?= $Ip['ip'] ?>">
-                                        <input type="submit" value="supprimer" name="ip_delete">
+                                        <input type="submit" value="supprimer" name="delete_ip">
                                     </form>
                                 </th>
                             </tr>
@@ -174,13 +171,8 @@ function refus_cookie_settings() {
                                     <th class="value column-value has-row-actions column-primary">
                                         <form action="" method="post">
                                             <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
-                                            <input type="hidden" name="target_id" value="<?= $element->id ?>">
-                                            <input type="button" value="modifier" name="target_edit">
-                                        </form>
-                                        <form action="" method="post">
-                                            <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
-                                            <input type="hidden" name="target_id" value="<?= $element->id ?>">
-                                            <input type="button" value="supprimer" name="target_delete">
+                                            <input type="hidden" name="target_name" value="<?= $element->element ?>">
+                                            <input type="submit" value="supprimer" name="delete_target">
                                         </form>
                                     </th>
                                 </tr>

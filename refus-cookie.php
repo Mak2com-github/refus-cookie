@@ -110,14 +110,21 @@ function cookie_custom_styles() {
 add_action('admin_init', 'dbOperatorFunctions');
 function dbOperatorFunctions() {
     $RefusSettings = new RefusSettings();
+
+    // IPs Actions
     if (isset($_POST['add_ip'])) {
         $RefusSettings->addSettingsIP($_POST);
     }
-    if (isset($_POST['add_element'])) {
-        $RefusSettings->addSettingsElement($_POST);
-    }
-    if (isset($_POST['ip_delete'])) {
+    if (isset($_POST['delete_ip'])) {
         $RefusSettings->deleteSettingsIp($_POST);
+    }
+
+    // Targets Actions
+    if (isset($_POST['add_target'])) {
+        $RefusSettings->addSettingsTarget($_POST);
+    }
+    if (isset($_POST['delete_target'])) {
+        $RefusSettings->deleteSettingsTarget($_POST);
     }
 }
 

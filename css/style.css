@@ -1,19 +1,60 @@
+.toplevel_page_refus-cookie-settings #wpbody-content .wrap h1 {
+    font-size: 40px;
+    font-weight: 800;
+}
+.toplevel_page_refus-cookie-settings #wpbody-content .wrap .information_container p {
+    font-size: 16px;
+    font-weight: 400;
+}
+.toplevel_page_refus-cookie-settings #wpbody-content .wrap .information_container p span {
+    background-color: limegreen;
+    padding: 0 9px 2px 9px;
+    font-size: 16px;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 20px;
+    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 20%);
+    margin-left: 10px;
+}
 .settings_container .settings_top {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 
 .settings_container .settings_top .form-container,
 .settings_container .settings_top .form-container {
-    max-width: 25%;
+    max-width: 40%;
+    width: 40%;
+}
+
+.settings_container .settings_top .form-container .form-row {
+    margin: 5px 0;
+}
+.settings_container .settings_top .form-container .form-row label {
+    font-size: 14px;
+    font-weight: 600;
+}
+.settings_container .settings_top .form-container .form-row input,
+.settings_container .settings_top .form-container .form-row select {
+    margin: 0 10px;
 }
 
 .settings_container .settings_body {
     display: flex;
-    flex-direction: revert;
-    justify-content: space-evenly;
+    flex-direction: row;
+    justify-content: space-around;
 }
 .settings_container .settings_body .settings-body-section {
-    max-width: 45%;
+    max-width: 40%;
+    width: 40%;
+}
+.settings_container .settings_body .settings-body-section table thead tr > th {
+    padding: 0 10px;
+}
+.settings_container .settings_body .settings-body-section table thead tr > th:nth-child(even),
+.settings_container .settings_body .settings-body-section table tbody tr > th:nth-child(even) {
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
 }

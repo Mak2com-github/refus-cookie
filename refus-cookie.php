@@ -21,8 +21,8 @@ if ( ! defined( 'WPINC' ) ) {
     exit;
 }
 
-register_activation_hook(__FILE__, 'refus_cookies_create_db');
-function refus_cookies_create_db() {
+register_activation_hook(__FILE__, 'rc_create_db');
+function rc_create_db() {
 
     global $wpdb;
 
@@ -88,8 +88,8 @@ function refus_cookies_create_db() {
 }
 
 /** INITIALISATION DU PLUGIN **/
-add_action('admin_menu','init_plugin_menu');
-function init_plugin_menu(){
+add_action('admin_menu','rc_init_plugin_menu');
+function rc_init_plugin_menu(){
     add_menu_page(
         'Réglages',
         'Refus Cookies',
@@ -101,14 +101,14 @@ function init_plugin_menu(){
     );
 }
 
-add_action('admin_init', 'cookie_custom_styles');
-function cookie_custom_styles() {
+add_action('admin_init', 'rc_custom_styles');
+function rc_custom_styles() {
     wp_enqueue_style('style_cookie');
     wp_register_style('style_cookie', plugins_url('/css/style.css', __FILE__));
 }
 
-add_action('admin_init', 'dbOperatorFunctions');
-function dbOperatorFunctions() {
+add_action('admin_init', 'rc_dbOperator_functions');
+function rc_dbOperator_functions() {
     $RefusSettings = new RefusSettings();
 
     // IPs Actions
@@ -129,7 +129,7 @@ function dbOperatorFunctions() {
 }
 
 add_action('wp_enqueue_scripts', 'cookie_custom_scripts');
-function cookie_custom_scripts() {
+function rc_custom_scripts() {
     $settings = new RefusSettings();
     wp_enqueue_style('style_cookie_front');
     wp_register_style('style_cookie_front', plugins_url('/css/style_front.css', __FILE__));
@@ -148,9 +148,9 @@ define('ROOTDIR', plugin_dir_path(__FILE__));
 require_once(ROOTDIR . 'refus-cookie-settings.php');
 require_once(ROOTDIR . 'classes/RefusSettings.php');
 
-add_action( 'wp_ajax_update_data', 'update_data' );
-add_action( 'wp_ajax_nopriv_update_data', 'update_data' );
-function update_data() {
+add_action( 'wp_ajax_update_data', 'rc_update_data' );
+add_action( 'wp_ajax_nopriv_update_data', 'rc_update_data' );
+function rc_update_data() {
 
     global $wpdb;
     $charset_collate = $wpdb->charset;
@@ -165,13 +165,13 @@ function update_data() {
     dbDelta($sql);
 }
 
-add_action('wp_dashboard_setup', 'my_custom_dashboard_widgets');
-function my_custom_dashboard_widgets() {
+add_action('wp_dashboard_setup', 'rc_custom_dashboard_widgets');
+function rc_custom_dashboard_widgets() {
     global $wp_meta_boxes;
-    wp_add_dashboard_widget('custom_help_widget', 'Refus Cookie', 'custom_dashboard_help');
+    wp_add_dashboard_widget('rc_custom_help_widget', 'Refus Cookie', 'rc_custom_dashboard_help');
 }
 
-function custom_dashboard_help() {
+function rc_custom_dashboard_help() {
     global $wpdb;
     $charset_collate = $wpdb->charset;
 

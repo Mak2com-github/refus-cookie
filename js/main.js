@@ -24,7 +24,7 @@ function addCustomEvent($url, $action, $element) {
 }
 
 jQuery(document).ready(function() {
-    var action = {action:"update_data"};
+    var action = {action:"rc_update_data"};
     var url = php_datas.home_url
     var ips = php_datas.registered_ips
     var visitor = php_datas.visitor_ip

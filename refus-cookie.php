@@ -21,8 +21,8 @@ if ( ! defined( 'WPINC' ) ) {
     exit;
 }
 
-register_activation_hook(__FILE__, 'create_db');
-function create_db() {
+register_activation_hook(__FILE__, 'refus_cookies_create_db');
+function refus_cookies_create_db() {
 
     global $wpdb;
 

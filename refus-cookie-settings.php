@@ -87,7 +87,6 @@ function refus_cookie_settings() {
                         <?php
                         $Settings = new RefusSettings();
                         $Ips = $Settings->getAllIps();
-                        $Ips = json_decode($Ips, true);
                         foreach ($Ips as $Ip) {
                             ?>
                             <tr class="hentry entry">
@@ -118,7 +117,7 @@ function refus_cookie_settings() {
                                     </form>
                                     <form action="" method="post">
                                         <input type="hidden" name="settings_ip_name" value="<?= $Ip['name'] ?>">
-                                        <input type="hidden" name="settings_ip_id" value="<?= $settingsID ?>">
+                                        <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
                                         <input type="hidden" name="settings_ip" value="<?= $Ip['ip'] ?>">
                                         <input type="submit" value="supprimer" name="ip_delete">
                                     </form>

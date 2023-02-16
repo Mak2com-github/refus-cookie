@@ -38,16 +38,12 @@ if(!class_exists('My_Class')) {
         }
 
         public function getAllIps() {
-
-            $query = $this->wpdb->get_results("SELECT JSON_EXTRACT(settings_datas, '$.ips') AS ips FROM $this->settings_table WHERE id = 1");
-            //$json_datas = json_decode($query, true);
+            $query = $this->wpdb->get_var("SELECT settings_datas FROM $this->settings_table WHERE id = 1");
+            $queryDatas = json_decode(json_decode($query), true);
             if (json_last_error() !== JSON_ERROR_NONE) {
-                echo 'Error decoding : '.json_last_error_msg();
-            } else {
-                echo "no errors".$json_datas;
+                return 'Error decoding : '.json_last_error_msg();
             }
-            var_dump($query);
-            return $query;
+            return $queryDatas['ips'];
         }
 
         public function addSettingsIP($datas) {
@@ -63,7 +59,6 @@ if(!class_exists('My_Class')) {
             $ip_name = htmlspecialchars($datas['setting_name'], ENT_QUOTES,'UTF-8', true);
 
             $existing = $this->getAllIps();
-            $existing = json_decode($existing, true);
 
             $existing[$ip_name] = array(
                     "ip" => $ip_address,
@@ -72,7 +67,7 @@ if(!class_exists('My_Class')) {
 
             $updated = $existing;
             $updated = json_encode($updated);
-
+            var_dump($this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = JSON_SET(settings_datas, '$.ips', '$updated') WHERE id = $row_id"));
             $this->wpdb->query(
                 $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = JSON_SET(settings_datas, '$.ips', '$updated') WHERE id = $row_id")
             );
@@ -103,22 +98,18 @@ if(!class_exists('My_Class')) {
         public function deleteSettingsIp($datas) {
             if (isset($datas) && !empty($datas)) {
                 $ip = $datas['settings_ip'];
-                $row_id = $datas['settings_ip_id'];
+                $row_id = $datas['settings_ids'];
                 $pattern = "/^[0-9\.]+$/";
-
                 // Test the input string against the pattern
                 if (preg_match($pattern, $ip)) {
                     $existing = $this->getAllIps();
-                    $existing = json_decode($existing, true);
-                    var_dump($existing);
-                    foreach ($existing as $key => $value) {
-                        if (isset($value[$datas['settings_ip_name']])) {
-                            unset($existing[$key]);
-                        }
+
+                    if (isset($existing[$datas['settings_ip_name']])) {
+                        unset($existing[$datas['settings_ip_name']]);
                     }
 
                     $updated = json_encode($existing);
-
+                    var_dump($updated);
 //                    $this->wpdb->query(
 //                        $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = JSON_SET(settings_datas, '$.ips', '$updated') WHERE id = $row_id")
 //                    );

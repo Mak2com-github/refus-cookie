@@ -72,6 +72,7 @@ if(!class_exists('My_Class')) {
                 return $_SESSION['success_message'] = "Le champ Nom n'est pas renseigné ou vide";
             }
 
+            $updated_at = date('Y-m-d H:i:s');
             $row_id = $datas['settings_id'];
             $ip_address = htmlspecialchars($datas['setting_ip'], ENT_NOQUOTES, 'UTF-8', true);
             $ip_name = htmlspecialchars($datas['setting_name'], ENT_QUOTES,'UTF-8', true);
@@ -86,7 +87,7 @@ if(!class_exists('My_Class')) {
             $updated = json_encode($updated, true);
 
             $this->wpdb->query(
-                $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated' WHERE id = $row_id")
+                $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated', updated_at = '$updated_at' WHERE id = $row_id")
             );
 
             if ($this->wpdb->last_error) {
@@ -104,6 +105,7 @@ if(!class_exists('My_Class')) {
                 return $_SESSION['success_message'] = "Le champ Type n'est pas renseigné ou vide";
             }
 
+            $updated_at = date('Y-m-d H:i:s');
             $row_id = $datas['settings_id'];
             $target_name = htmlspecialchars($datas['target_name'], ENT_NOQUOTES, 'UTF-8', true);
             $target_type = $datas['target_type'];
@@ -118,7 +120,7 @@ if(!class_exists('My_Class')) {
             $updated = json_encode($updated, true);
 
             $this->wpdb->query(
-                $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated' WHERE id = $row_id")
+                $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated', updated_at = '$updated_at' WHERE id = $row_id")
             );
 
             if ($this->wpdb->last_error) {
@@ -131,6 +133,7 @@ if(!class_exists('My_Class')) {
 
         public function deleteSettingsIp($datas) {
             if (isset($datas) && !empty($datas)) {
+                $updated_at = date('Y-m-d H:i:s');
                 $ip = $datas['settings_ip'];
                 $row_id = $datas['settings_id'];
                 $pattern = "/^[0-9\.]+$/";
@@ -143,7 +146,7 @@ if(!class_exists('My_Class')) {
                     $updated = json_encode($existing);
 
                     $this->wpdb->query(
-                        $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated' WHERE id = $row_id")
+                        $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated', updated_at = '$updated_at' WHERE id = $row_id")
                     );
 
                     if ($this->wpdb->last_error) {
@@ -161,6 +164,7 @@ if(!class_exists('My_Class')) {
 
         public function deleteSettingsTarget($datas) {
             if (isset($datas) && !empty($datas)) {
+                $updated_at = date('Y-m-d H:i:s');
                 $name = $datas['target_name'];
                 $row_id = $datas['settings_id'];
 
@@ -172,7 +176,7 @@ if(!class_exists('My_Class')) {
                 $updated = json_encode($existing);
 
                 $this->wpdb->query(
-                    $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated' WHERE id = $row_id")
+                    $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated', updated_at = '$updated_at' WHERE id = $row_id")
                 );
 
                 if ($this->wpdb->last_error) {

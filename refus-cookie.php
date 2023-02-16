@@ -82,7 +82,7 @@ function create_db() {
         );
         $defaults = json_encode($defaults);
         $wpdb->query(
-            $wpdb->prepare("INSERT INTO $cookie_table_name_config (settings_datas) VALUES (%s)", $defaults)
+            $wpdb->prepare("INSERT INTO $cookie_table_name_config (settings_datas, updated_at, created_at) VALUES (%s, %s, %s)", $defaults, $updated_at, $created_at)
         );
     }
 }

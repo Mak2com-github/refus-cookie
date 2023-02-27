@@ -1,9 +1,7 @@
 function addCustomEvent($url, $action, $element) {
     var btn = document.querySelector($element)
     if (btn) {
-        console.log(btn)
         btn.addEventListener('click', function() {
-            console.log('Les cookies ont été refusés.');
             fetch($url + '/wp-admin/admin-ajax.php', {
                 method: 'POST',
                 headers: {
@@ -33,7 +31,6 @@ jQuery(document).ready(function() {
 
     for (const value of Object.values(ips)) {
         if (value.ip === visitor) {
-            console.log("IP is in the JSON value")
             found = true
             break // stop the loop
         }

@@ -128,7 +128,7 @@ function rc_dbOperator_functions() {
     }
 }
 
-add_action('wp_enqueue_scripts', 'cookie_custom_scripts');
+add_action('wp_enqueue_scripts', 'rc_custom_scripts');
 function rc_custom_scripts() {
     $settings = new RefusSettings();
     wp_enqueue_style('style_cookie_front');

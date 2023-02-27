@@ -43,7 +43,7 @@ function refus_cookie_settings() {
                     </div>
                     <div class="form-row">
                         <label for="setting_ip">IP à exclure</label>
-                        <input type="text" name="setting_ip" id="SettingsIp" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx" required>
+                        <input type="text" name="setting_ip" id="SettingsIp" pattern="^([0-9]{1,3}\.){4}$" placeholder="xxx.xxx.xx.xx" required>
                     </div>
                     <p class="submit">
                         <input type="submit" name="add_ip" id="submit" class="button button-primary" value="Ajouter">
@@ -146,38 +146,35 @@ function refus_cookie_settings() {
                         $Settings = new RefusSettings();
                         $Targets = $Settings->getAllElements();
                         foreach ($Targets as $target) {
-                            $elements = json_decode($target->targets);
-                            foreach ((array)$elements as $element) {
-                                ?>
-                                <tr class="hentry entry">
-                                    <th class="value column-value has-row-actions column-primary">
+                            ?>
+                            <tr class="hentry entry">
+                                <th class="value column-value has-row-actions column-primary">
+                                <?php
+                                if ($target['element']) {
+                                    ?>
+                                    <p><?= $target['element'] ?></p>
                                     <?php
-                                    if ($element->element) {
+                                }
+                                ?>
+                                </th>
+                                <th class="value column-value has-row-actions column-primary">
+                                    <?php
+                                    if ($target['type']) {
                                         ?>
-                                        <p><?= $element->element ?></p>
+                                        <p><?php if ($target['type'] === "class") { echo "Classe"; } else { echo "ID"; } ?></p>
                                         <?php
                                     }
                                     ?>
-                                    </th>
-                                    <th class="value column-value has-row-actions column-primary">
-                                        <?php
-                                        if ($element->type) {
-                                            ?>
-                                            <p><?php if ($element->type === "class") { echo "Classe"; } else { echo "ID"; } ?></p>
-                                            <?php
-                                        }
-                                        ?>
-                                    </th>
-                                    <th class="value column-value has-row-actions column-primary">
-                                        <form action="" method="post">
-                                            <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
-                                            <input type="hidden" name="target_name" value="<?= $element->element ?>">
-                                            <input type="submit" value="supprimer" name="delete_target">
-                                        </form>
-                                    </th>
-                                </tr>
-                                <?php
-                            }
+                                </th>
+                                <th class="value column-value has-row-actions column-primary">
+                                    <form action="" method="post">
+                                        <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
+                                        <input type="hidden" name="target_name" value="<?= $target['element'] ?>">
+                                        <input type="submit" value="supprimer" name="delete_target">
+                                    </form>
+                                </th>
+                            </tr>
+                            <?php
                         }
                         ?>
                         </tbody>
@@ -186,14 +183,5 @@ function refus_cookie_settings() {
             </div>
         </div>
     </div>
-
-    <script>
-        const inputField = document.getElementById("SettingsIp")
-        inputField.addEventListener("input", function(event) {
-            const value = event.target.value.replace(/\D/g, '') // remove non-digit characters
-            const maskedValue = value.replace(/(\d{1,3})(\d{1,3})?(\d{1,3})?(\d{1,3})?/, '$1.$2.$3.$4') // format as IP address
-            event.target.value = maskedValue
-        })
-    </script>
     <?php
 }

@@ -33,8 +33,12 @@ if(!class_exists('My_Class')) {
         }
 
         public function getAllElements() {
-            $query = $this->wpdb->get_results("SELECT settings_datas->'$.targets' AS targets FROM $this->settings_table WHERE id = 1");
-            return $query;
+            $query = $this->wpdb->get_var("SELECT settings_datas FROM $this->settings_table WHERE id = 1");
+            $queryDatas = json_decode($query, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return 'Error decoding : '.json_last_error_msg();
+            }
+            return $queryDatas['targets'];
         }
 
         public function getAllIps() {
@@ -87,7 +91,7 @@ if(!class_exists('My_Class')) {
             $updated = json_encode($updated, true);
 
             $this->wpdb->query(
-                $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated', updated_at = '$updated_at' WHERE id = $row_id")
+                $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = %s, updated_at = %s WHERE id = %d", $updated, $updated_at, $row_id)
             );
 
             if ($this->wpdb->last_error) {
@@ -120,7 +124,7 @@ if(!class_exists('My_Class')) {
             $updated = json_encode($updated, true);
 
             $this->wpdb->query(
-                $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated', updated_at = '$updated_at' WHERE id = $row_id")
+                $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = %s, updated_at = %s WHERE id = %d", $updated, $updated_at, $row_id)
             );
 
             if ($this->wpdb->last_error) {
@@ -146,7 +150,7 @@ if(!class_exists('My_Class')) {
                     $updated = json_encode($existing);
 
                     $this->wpdb->query(
-                        $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated', updated_at = '$updated_at' WHERE id = $row_id")
+                        $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = %s, updated_at = %s WHERE id = %d", $updated, $updated_at, $row_id)
                     );
 
                     if ($this->wpdb->last_error) {
@@ -176,7 +180,7 @@ if(!class_exists('My_Class')) {
                 $updated = json_encode($existing);
 
                 $this->wpdb->query(
-                    $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = '$updated', updated_at = '$updated_at' WHERE id = $row_id")
+                    $this->wpdb->prepare("UPDATE $this->settings_table SET settings_datas = %s, updated_at = %s WHERE id = %d", $updated, $updated_at, $row_id)
                 );
 
                 if ($this->wpdb->last_error) {

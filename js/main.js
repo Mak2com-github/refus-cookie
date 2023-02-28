@@ -1,20 +1,21 @@
-function addCustomEvent($url, $action, $element) {
+function addCustomEvent($url, $element) {
     var btn = document.querySelector($element)
+    var datas = {action: 'rc_update_data',}
     if (btn) {
         btn.addEventListener('click', function() {
-            fetch($url + '/wp-admin/admin-ajax.php', {
+            fetch($url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Cache-Control': 'no-cache',
                 },
-                body: new URLSearchParams($action),
+                body: new URLSearchParams(datas),
             })
+                .then(response => response.json())
                 .then(response => {
-                    if(response.status === 200 ) {
-                        console.log('Envoyées');
-                    } else {
-                        console.log("Ajax Error : " + response)
+                    console.log(response)
+                    if(!response.success) {
+                        alert(response.data)
                     }
                 });
         });
@@ -22,8 +23,7 @@ function addCustomEvent($url, $action, $element) {
 }
 
 jQuery(document).ready(function() {
-    var action = {action:"rc_update_data"};
-    var url = php_datas.home_url
+    var url = php_datas.admin_ajax
     var ips = php_datas.registered_ips
     var visitor = php_datas.visitor_ip
     var targets = php_datas.registered_targets
@@ -42,7 +42,7 @@ jQuery(document).ready(function() {
             } else {
                 var target = "." + value.element
             }
-            addCustomEvent(url, action, target)
+            addCustomEvent(url, target)
         }
     }
 });

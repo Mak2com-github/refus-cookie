@@ -53,8 +53,30 @@
 .settings_container .settings_body .settings-body-section table thead tr > th {
     padding: 0 10px;
 }
+.settings_container .settings_body .settings-body-section table thead tr > th:last-of-type {
+    text-align: center;
+}
+
+.settings_container .settings_body .settings-body-section table thead tr > th p {
+    font-weight: 600;
+}
 .settings_container .settings_body .settings-body-section table thead tr > th:nth-child(even),
 .settings_container .settings_body .settings-body-section table tbody tr > th:nth-child(even) {
     border-left: 1px solid grey;
     border-right: 1px solid grey;
+}
+
+.settings_container .settings_body .settings-body-section table tbody tr th form {
+    text-align: center;
+}
+.settings_container .settings_body .settings-body-section table tbody tr th form .delete-btn {
+    background-color: indianred;
+    padding: 5px 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    cursor: pointer;
 }

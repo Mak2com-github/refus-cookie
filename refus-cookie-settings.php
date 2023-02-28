@@ -90,7 +90,7 @@ function refus_cookie_settings() {
                                 <p>Adresses IP</p>
                             </th>
                             <th class="manage-column column-title column-primary sortable desc" scope="col">
-                                <p>Valeur</p>
+                                <p>Action</p>
                             </th>
                         </tr>
                         </thead>

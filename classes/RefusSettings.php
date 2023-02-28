@@ -2,10 +2,9 @@
 /*
  * Refus cookie settings class
  */
-if(!class_exists('My_Class')) {
+if(!class_exists('RefusSettings')) {
     class RefusSettings
     {
-
         private $wpdb;
         private $charset_collate;
         private $wpdb_collate;
@@ -26,12 +25,27 @@ if(!class_exists('My_Class')) {
             $this->datetime = current_datetime()->format('Y-m-d H:i:s');
         }
 
+        /**
+         * @return string|null
+         */
+        public function getRefusNumber()
+        {
+            $query = $this->wpdb->get_var("SELECT refus FROM $this->data_table WHERE id = 1");
+            return $query;
+        }
+
+        /**
+         * @return array|object|null
+         */
         public function getAllSettings()
         {
             $query = $this->wpdb->get_results("SELECT * FROM $this->settings_table WHERE id = 1");
             return $query;
         }
 
+        /**
+         * @return mixed|string
+         */
         public function getAllElements() {
             $query = $this->wpdb->get_var("SELECT settings_datas FROM $this->settings_table WHERE id = 1");
             $queryDatas = json_decode($query, true);
@@ -41,6 +55,9 @@ if(!class_exists('My_Class')) {
             return $queryDatas['targets'];
         }
 
+        /**
+         * @return mixed|string
+         */
         public function getAllIps() {
             $query = $this->wpdb->get_var("SELECT settings_datas FROM $this->settings_table WHERE id = 1");
             $queryDatas = json_decode($query, true);
@@ -50,6 +67,9 @@ if(!class_exists('My_Class')) {
             return $queryDatas['ips'];
         }
 
+        /**
+         * @return mixed|string
+         */
         public function getAllTargets() {
             $query = $this->wpdb->get_var("SELECT settings_datas FROM $this->settings_table WHERE id = 1");
             $queryDatas = json_decode($query, true);
@@ -59,6 +79,9 @@ if(!class_exists('My_Class')) {
             return $queryDatas['targets'];
         }
 
+        /**
+         * @return mixed|string
+         */
         public function getJSONDatas() {
             $query = $this->wpdb->get_var("SELECT settings_datas FROM $this->settings_table WHERE id = 1");
             $queryDatas = json_decode($query, true);
@@ -68,7 +91,12 @@ if(!class_exists('My_Class')) {
             return $queryDatas;
         }
 
-        public function addSettingsIP($datas) {
+        /**
+         * @param $datas
+         * @return string
+         */
+        public function addSettingsIP($datas)
+        {
             if (!isset($datas['setting_ip']) && empty($datas['setting_ip'])) {
                 return $_SESSION['success_message'] = "Le champ de l'adresse IP n'est pas renseignée ou vide";
             }
@@ -101,6 +129,10 @@ if(!class_exists('My_Class')) {
             }
         }
 
+        /**
+         * @param $datas
+         * @return string|void
+         */
         public function addSettingsTarget($datas) {
             if (!isset($datas['target_name']) && empty($datas['target_name'])) {
                 return $_SESSION['success_message'] = "Le champ de nom de l'élément à cibler n'est pas renseignée ou invalide";
@@ -135,6 +167,9 @@ if(!class_exists('My_Class')) {
 
         }
 
+        /**
+         * @param $datas
+         */
         public function deleteSettingsIp($datas) {
             if (isset($datas) && !empty($datas)) {
                 $updated_at = date('Y-m-d H:i:s');
@@ -166,6 +201,9 @@ if(!class_exists('My_Class')) {
             }
         }
 
+        /**
+         * @param $datas
+         */
         public function deleteSettingsTarget($datas) {
             if (isset($datas) && !empty($datas)) {
                 $updated_at = date('Y-m-d H:i:s');

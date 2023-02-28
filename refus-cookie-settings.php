@@ -17,7 +17,15 @@ function refus_cookie_settings() {
     <div class="wrap refus-cookie-container">
         <h1>Réglages</h1>
         <div class="information_container">
-            <p>Votre adresse IP actuelle : <span><?= getUserIP() ?></span></p>
+            <div class="refus_container">
+                <?php
+                $Settings = new RefusSettings();
+                ?>
+                <p>Nombre total de refus des cookies : <span><?= $Settings->getRefusNumber(); ?></span></p>
+            </div>
+            <div class="ip_container">
+                <p>Votre adresse IP actuelle : <span><?= getUserIP() ?></span></p>
+            </div>
         </div>
         <div class="message_container">
             <p>
@@ -43,7 +51,7 @@ function refus_cookie_settings() {
                     </div>
                     <div class="form-row">
                         <label for="setting_ip">IP à exclure</label>
-                        <input type="text" name="setting_ip" id="SettingsIp" pattern="^([0-9]{1,3}\.){4}$" placeholder="xxx.xxx.xx.xx" required>
+                        <input type="text" name="setting_ip" id="SettingsIp" pattern="^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$" placeholder="xxx.xxx.xx.xx" required>
                     </div>
                     <p class="submit">
                         <input type="submit" name="add_ip" id="submit" class="button button-primary" value="Ajouter">

@@ -136,7 +136,7 @@ function rc_custom_scripts() {
     wp_enqueue_script('cookie_js', plugins_url('/js/main.js', __FILE__) , array('jquery'), false, true);
     wp_localize_script( 'cookie_js', 'php_datas',
         array(
-            'home_url'      => home_url(),
+            'admin_ajax'      => admin_url( 'admin-ajax.php' ),
             'visitor_ip'    => getUserIP(),
             'registered_ips'    =>  $settings->getAllIps(),
             'registered_targets'    =>  $settings->getAllTargets(),
@@ -147,20 +147,11 @@ function rc_custom_scripts() {
 require_once __DIR__ . '/refus-cookie-settings.php';
 require_once __DIR__ . '/classes/RefusSettings.php';
 
-add_action( 'wp_ajax_update_data', 'rc_update_data' );
-add_action( 'wp_ajax_nopriv_update_data', 'rc_update_data' );
+add_action( 'wp_ajax_rc_update_data', 'rc_update_data' );
+add_action( 'wp_ajax_nopriv_rc_update_data', 'rc_update_data' );
 function rc_update_data() {
-
-    global $wpdb;
-    $charset_collate = $wpdb->charset;
-
-    $wpdb_collate = $wpdb->collate;
-    $wpdb_charset = $wpdb->charset;
-    $cookie_table_name = $wpdb->prefix . 'refus_cookie';
-
     $sql = "UPDATE `wp_refus_cookie` SET `refus` = `refus` + 1, `updated_at`= NOW()";
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
-
     dbDelta($sql);
 }
 

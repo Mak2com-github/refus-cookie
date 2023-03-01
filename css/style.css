@@ -1,6 +1,6 @@
 .refus-cookie-container h1 {
-    font-size: 40px;
-    font-weight: 800;
+    font-size: 40px !important;
+    font-weight: 800 !important;
 }
 .refus-cookie-container .information_container p {
     font-size: 16px;

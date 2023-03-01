@@ -124,7 +124,7 @@ function refus_cookie_settings() {
                                         <input type="hidden" name="settings_ip_name" value="<?= $Ip['name'] ?>">
                                         <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
                                         <input type="hidden" name="settings_ip" value="<?= $Ip['ip'] ?>">
-                                        <input type="submit" value="supprimer" name="delete_ip">
+                                        <input class="delete-btn" type="submit" value="supprimer" name="delete_ip">
                                     </form>
                                 </th>
                             </tr>
@@ -178,7 +178,7 @@ function refus_cookie_settings() {
                                     <form action="" method="post">
                                         <input type="hidden" name="settings_id" value="<?= $settingsID ?>">
                                         <input type="hidden" name="target_name" value="<?= $target['element'] ?>">
-                                        <input type="submit" value="supprimer" name="delete_target">
+                                        <input class="delete-btn" type="submit" value="supprimer" name="delete_target">
                                     </form>
                                 </th>
                             </tr>

@@ -5,16 +5,16 @@
  * @package           refus-cookie
  *
  * @wordpress-plugin
- * Plugin name:     Refus Cookie
- * Plugin URI:      https://wordpress.com
- * Description:     Permet de savoir le taux de refus des cookies sur le site.
- * Version:         1.2
- * Author:          Anaïs
- * Author URI:      https://worsdpress.com
- * License:         GPL-2.0+
- * License URI:     http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:     refus-cookie
- * Domain Path:     /languages
+ * Plugin name: Refus Cookie
+ * Plugin URI: https://wordpress.com
+ * Description: Permet de savoir le taux de refus des cookies sur le site.
+ * Version : 1.2
+ * Author: Anaïs
+ * Author URI: https://worsdpress.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain: refus-cookie
+ * Domain Path:       /languages
 */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -150,7 +150,9 @@ require_once __DIR__ . '/classes/RefusSettings.php';
 add_action( 'wp_ajax_rc_update_data', 'rc_update_data' );
 add_action( 'wp_ajax_nopriv_rc_update_data', 'rc_update_data' );
 function rc_update_data() {
-    $sql = "UPDATE `wp_refus_cookie` SET `refus` = `refus` + 1, `updated_at`= NOW()";
+    global $wpdb;
+    $table = $wpdb->prefix . 'refus_cookie';
+    $sql = "UPDATE $table SET `refus` = `refus` + 1, `updated_at`= NOW()";
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
 }
@@ -167,8 +169,9 @@ function rc_custom_dashboard_help() {
 
     $wpdb_collate = $wpdb->collate;
     $wpdb_charset = $wpdb->charset;
+    $table = $wpdb->prefix . 'refus_cookie';
 
-    $sql = "SELECT `refus` FROM `wp_refus_cookie`";
+    $sql = "SELECT `refus` FROM $table";
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
 
     $results = $wpdb->get_results($sql, ARRAY_A);

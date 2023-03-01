@@ -5,16 +5,16 @@
  * @package           refus-cookie
  *
  * @wordpress-plugin
- * Plugin name: Refus Cookie
- * Plugin URI: https://wordpress.com
- * Description: Permet de savoir le taux de refus des cookies sur le site.
- * Version : 1.2
- * Author: Anaïs
- * Author URI: https://worsdpress.com
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain: refus-cookie
- * Domain Path:       /languages
+ * Plugin name:         Refus Cookie
+ * Plugin URI:          https://wordpress.com
+ * Description:         Permet de savoir le taux de refus des cookies sur le site.
+ * Version:             1.6
+ * Author:              Anaïs
+ * Author URI:          https://worsdpress.com
+ * License:             GPL-2.0+
+ * License URI:         http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:         refus-cookie
+ * Domain Path:         /languages
 */
 
 if ( ! defined( 'WPINC' ) ) {

@@ -20,3 +20,36 @@
     font-size: 16px;
     line-height: 20px;
 }
+
+@media screen and (max-width: 1200px) {
+    #cookie-notice {
+        width: 65%;
+    }
+    .cookie-notice-container {
+        padding: 15px 40px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    #cookie-notice {
+        width: 90%;
+    }
+
+    #cn-accept-cookie {
+        width: 40%;
+    }
+
+    #cn-refuse-cookie {
+        width: 40%;
+    }
+
+    #cn-more-info {
+        width: 100%;
+        display: block !important;
+        margin-top: 10px !important;
+    }
+
+    .cn-close-icon {
+        right: 5px !important;
+    }
+}

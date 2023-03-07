@@ -190,6 +190,56 @@ function refus_cookie_settings() {
                 </div>
             </div>
         </div>
+
+        <div class="section-right settings-body-section">
+            <h2>Données</h2>
+                    <table class="wp-list-table widefat fixed striped table-view-list">
+                        <thead>
+                        <tr>
+                            <th class="manage-column column-title column-primary sortable desc title" scope="col">
+                                <p>Refus</p>
+                            </th>
+                            <th class="manage-column column-title column-primary sortable desc type" scope="col">
+                                <p>Date</p>
+                            </th>
+                        </tr>
+                </thead>
+                <tbody id="settingsRefus">
+                    <?php
+                    $Settings = new RefusSettings();
+                    $values = $Settings->getRefusCookie();
+                    foreach ($values as $value) {
+            
+                        ?>
+                        <tr class="">
+                            <th class="">
+                            <?php
+                            //afficher 0 au lieu de refus, car dans le tableau la ligne 0 est 'refus'
+                            //la ligne 1 est 'created_at'
+                            if (!empty($value[0])) {
+                                ?>
+                                <p><?= $value[0] ?></p>
+                                <?php
+                            }
+                            ?>
+                            </th>
+                            <th class="">
+                                <?php
+                                if (!empty($value[1])) {
+                                    ?>
+                                    <p><?= $value[1] ?></p>
+                                    <?php
+                                }
+                                ?>
+                            </th>
+                        </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+
     </div>
     <?php
 }

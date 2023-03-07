@@ -28,9 +28,21 @@ if(!class_exists('RefusSettings')) {
         /**
          * @return string|null
          */
+        public function getRefusDate()
+        {
+            $query = $this->wpdb->get_var("SELECT DATE_FORMAT(created_at, '%e %b %Y') FROM $this->data_table");
+            return $query;
+        }
+
+        // ARRAY_N permet de retourner un tableau 
+        public function getRefusCookie() {
+            $query = $this->wpdb->get_results("SELECT refus, created_at FROM $this->data_table WHERE refus = 0", ARRAY_N);
+            return $query;       
+        }
+
         public function getRefusNumber()
         {
-            $query = $this->wpdb->get_var("SELECT refus FROM $this->data_table WHERE id = 1");
+            $query = $this->wpdb->get_var("SELECT count(*) FROM $this->data_table WHERE refus = 0");
             return $query;
         }
 
@@ -164,7 +176,6 @@ if(!class_exists('RefusSettings')) {
             } else {
                 $_SESSION['success_message'] = "Les données ont bien été enregistrées";
             }
-
         }
 
         /**

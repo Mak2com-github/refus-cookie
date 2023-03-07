@@ -10,15 +10,15 @@ WordPress : Version >= 6.0.0
 <br>Il est possible d'utiliser ce plugin avec n'importe quel plugin de gestion des cookies.
 
 ## Installation
-Pour l'installation du plugin, il faut simplement d'importer le fichier .zip du plugin dans la section extensions et de l'activer. Il s'affichera ensuite dans la sidebar de Wordpress et un widget s'affichera sur le tableau de bord.
+Pour l'installation du plugin, il faut simplement importer le fichier .zip du plugin dans la section **extension** et de l'activer. Il s'affichera ensuite dans la sidebar de Wordpress et un widget s'affichera sur le tableau de bord.
 <br>L'ip de l'utilisateur l'aillant installé sera automatiquement ajoutée pour ne pas fausser les résultats (si l'utilisateur clique sur le bouton de refus des cookies)
 
 ## Utilisation
 ### Ajouter un élément à cibler
-Afin d'utiliser correctement et pleinement ce plugin, rendez-vous sur son <strong>Back Office</strong>, une adresse IP est affichée, il s'agit de la votre.<br>
+Afin d'utiliser correctement et pleinement ce plugin, rendez-vous sur son **Back Office**, une adresse IP est affichée, il s'agit de la votre.<br>
 
-Il faut également cibler le <strong>bouton de refus des cookies</strong>, pour se faire: </br>- Rendez-vous sur la page d'accueil du site, </br>- Inspectez le bouton de refus dans la barre de gestion des cookies, </br>- Récupérez l'ID ou la Classe </br>- Revenir sur le Back Office du plugin, rentrez l'id ou la class dans "Elément à cibler" et choisissez son type.
-Cliquez sur le bouton <strong>Ajouter</strong>, l'élément ciblé sera ensuite afficher dans le tableau en dessous. Il est possible de supprimer les éléments.
+Il faut également cibler le **bouton de refus des cookies**, pour se faire: </br>- Rendez-vous sur la page d'accueil du site, </br>- Inspectez le bouton de refus dans la barre de gestion des cookies, </br>- Récupérez l'ID ou la Classe </br>- Revenir sur le Back Office du plugin, rentrez l'id ou la class dans "Elément à cibler" et choisissez son type.
+Cliquez sur le bouton **Ajouter**, l'élément ciblé sera ensuite afficher dans le tableau en dessous. Il est possible de supprimer les éléments.
 
 ### Ajouter une adresse ip à exclure
 Il est possible d'ajouter une adresse IP qui ne déclancheras pas d'évènements au clic sur le bouton de refus des cookies, afin de ne pas fausser les résultats.

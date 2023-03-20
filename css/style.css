@@ -85,3 +85,15 @@
     display: flex;
     flex-direction: row;
 }
+
+.formulaire-date {
+    display: flex;
+    flex-direction: column;
+    width: 10%;
+    margin-bottom: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}

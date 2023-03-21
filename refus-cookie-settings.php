@@ -189,60 +189,72 @@ function refus_cookie_settings() {
                     </table>
                 </div>
             </div>
-        </div>
 
-        <div class="section-right settings-body-section">
-            <h2>Données</h2>
-            <div class="formulaire-date">
-            <form action="admin.php?page=refus-cookie-settings" method="post">
-                <label for="debut">Rentrer une date de début</label>
-                <input type="date" name="debut" value="<?= $settingsID ?>">
-                <label for="fin">Rentrer une date de fin</label>
-                <input type="date" name="fin" value="<?= $settingsID ?>">
-                <p class="submit">
-                    <input type="submit" name="submit_date" id="submit" class="button button-primary" value="Envoyer">
-                </p>
-            </form> 
-            </div>
-            <table class="wp-list-table widefat fixed striped table-view-list">
-                <thead>
-                <tr>
-                    <th class="manage-column column-title column-primary sortable desc title" scope="col">
-                        <p>Refus</p>
-                    </th>
-                    <th class="manage-column column-title column-primary sortable desc type" scope="col">
-                        <p>Date</p>
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="settingsRefus">
+            <div class="settings-body">
+                    <h2>Données</h2>
+                    <div class="formulaire-date">
+                        <form action="admin.php?page=refus-cookie-settings" method="post">
+                            <label for="debut">Rentrer une date de début</label>
+                                <input type="date" name="debut" value="<?= $settingsID ?>">
+                            <label for="fin">Rentrer une date de fin</label>
+                                <input type="date" name="fin" value="<?= $settingsID ?>">
+                            <p class="submit">
+                                <input type="submit" name="submit_date" id="submit" class="button button-primary" value="Envoyer">
+                            </p>
+                        </form> 
+                    </div>
+                    <table class="wp-list-table">
+                        <thead>
+                        <tr>
+                            <th class="manage-column" scope="col">
+                                <p>Refus</p>
+                            </th>
+                            <th class="manage-column" scope="col">
+                                <p>Entre le</p>
+                            </th>
+                            <th class="manage-column" scope="col">
+                                <p>Et le</p>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="settingsRefus">
 
-                    <?php
-                    $Settings = new RefusSettings();
-                    $Values = $Settings->getRefusInterval();
-                    foreach ($Values as $value) { 
-                    ?>
-                    <tr class="hentry entry">
-                        <th class="value column-value has-row-actions column-primary">
-                            0
-                        </th>
-                        <th class="value column-value has-row-actions column-primary">
                             <?php
-                                if (!empty($value[0])) {
-                                    ?>
-                                    <p><?=$value[0] ?></p>
-                                    <?php
-                                }
+                            $Settings = new RefusSettings();
+                            $Values = $Settings->getRefusInterval();
+                            foreach ($Values as $value) {
+                                ?>
+                                <tr class="hentry entry">
+                                    <th class="value column-value has-row-actions column-primary">
+                                        <?php
+                                            if (!empty($value[0])) {
+                                                ?>
+                                                <p><?=$value[0] ?></p>
+                                                <?php
+                                            }
+                                        ?>
+                                    </th>
+                                    <th class="value column-value has-row-actions column-primary">
+                                        <?php
+                                            echo($_POST["debut"]);
+                                        ?>
+                                    </th>
+                                    <th class="value column-value has-row-actions column-primary">
+                                        <?php
+                                            echo($_POST["fin"]);
+                                        ?>
+                                    </th>
+                                </tr>
+                                <?php
+                            }
                             ?>
-                        </th>
-                    </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+            </div>
+
         </div>
 
+        
     </div>
     <?php
 }

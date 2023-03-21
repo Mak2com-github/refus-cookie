@@ -89,11 +89,47 @@
 .formulaire-date {
     display: flex;
     flex-direction: column;
-    width: 10%;
     margin-bottom: 30px;
 }
 
 form {
     display: flex;
     flex-direction: column;
+}
+
+.settings-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 90px;
+    margin-right: 90px;
+}
+
+.settings-body .formulaire-date form {
+    display: flex;
+    width: 10%;
+}
+
+.settings-body .settings-body-section .manage-column {
+    border-right: silver 1px solid;
+}
+
+.settings-body .formulaire-date input {
+    height: 5%;
+}
+
+.settings-body .wp-list-table {
+    background-color: white;
+    border-collapse: collapse;
+}
+
+
+.settings-body .wp-list-table  th {
+    border: rgb(179, 179, 179) 1px solid;
+    text-align: left;
+    padding-left: 10px;
+}
+
+#settingsRefus th{
+    background-color: #F6F7F7;    
 }

@@ -36,7 +36,7 @@ function rc_create_db() {
         $sql_cookie =
             "CREATE TABLE IF NOT EXISTS {$cookie_table_name} (
                 `id` BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-                `refus` BOOLEAN DEFAULT TRUE NOT NULL,
+                `refus` TINYINT DEFAULT 1 NOT NULL,
                 `created_at` DATETIME NULL,
                 `updated_at` DATETIME NULL
             )";
@@ -47,9 +47,7 @@ function rc_create_db() {
         $updated_at = date('Y-m-d H:i:s');
 
         // $wpdb->insert($cookie_table_name, array(
-        //     'refus' => 0,
-        //     'created_at' => $created_at,
-        //     'updated_at' => $updated_at,
+        //     'refus' => 1
         // ));
     }
     if ( $wpdb->get_var("SHOW TABLES LIKE '$cookie_table_name_config'") != $cookie_table_name_config ) {

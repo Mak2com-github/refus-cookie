@@ -15,7 +15,7 @@ function addCustomEvent($url, $element) {
                 .then(response => {
                     console.log(response)
                     if(!response.success) {
-                        alert(response.data)
+                        console.log(response)
                     }
                 });
         });

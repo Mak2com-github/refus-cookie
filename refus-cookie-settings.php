@@ -222,7 +222,7 @@ function refus_cookie_settings() {
                             <?php
                             $Settings = new RefusSettings();
                             $Values = $Settings->getRefusInterval();
-                            if (!empty($Values)) {
+                            if ($Values) {
                                 foreach ($Values as $value) {
                                     ?>
                                     <tr class="hentry entry">

@@ -37,14 +37,12 @@ function rc_create_db() {
             "CREATE TABLE IF NOT EXISTS {$cookie_table_name} (
                 `id` BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
                 `refus` TINYINT DEFAULT 1 NOT NULL,
-                `created_at` DATETIME NULL,
-                `updated_at` DATETIME NULL
+                `created_at` DATETIME NULL
             )";
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_cookie);
 
         $created_at = date('Y-m-d H:i:s');
-        $updated_at = date('Y-m-d H:i:s');
 
         // $wpdb->insert($cookie_table_name, array(
         //     'refus' => 1
@@ -179,15 +177,12 @@ function rc_custom_dashboard_help() {
     $sql = "SELECT `refus` FROM $table";
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
 
-    if (!empty($sql['refus'])) {
-        $results = $wpdb->get_results($sql, ARRAY_A);
-        if ($results) {
-            foreach($results as $result) {
-                echo "Taux de refus des cookies: " . $sql['refus'];
-            }
+    $results = $wpdb->get_results($sql, ARRAY_A);
+
+    if ($results) {
+        foreach($results as $result) {
+            echo "Taux de refus des cookies: " . $result['refus'];
         }
-    } else {
-        echo "Aucun résultat disponible pour le moment...";
     }
 }
 

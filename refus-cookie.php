@@ -180,9 +180,7 @@ function rc_custom_dashboard_help() {
     $results = $wpdb->get_results($sql, ARRAY_A);
 
     if ($results) {
-        foreach($results as $result) {
-            echo "Taux de refus des cookies: " . $result['refus'];
-        }
+        echo "Taux de refus des cookies: " . count($results);
     }
 }
 

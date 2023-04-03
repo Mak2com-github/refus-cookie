@@ -8,7 +8,7 @@
  * Plugin name:         Refus Cookie
  * Plugin URI:          https://wordpress.com
  * Description:         Permet de savoir le taux de refus des cookies sur le site.
- * Version:             1.6
+ * Version:             2.1
  * Author:              Anaïs
  * Author URI:          https://worsdpress.com
  * License:             GPL-2.0+
@@ -179,9 +179,15 @@ function rc_custom_dashboard_help() {
     $sql = "SELECT `refus` FROM $table";
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
 
-    $results = $wpdb->get_results($sql, ARRAY_A);
-    foreach($results as $result) {
-        echo "Taux de refus des cookies: " . $sql['refus'];
+    if (!empty($sql['refus'])) {
+        $results = $wpdb->get_results($sql, ARRAY_A);
+        if ($results) {
+            foreach($results as $result) {
+                echo "Taux de refus des cookies: " . $sql['refus'];
+            }
+        }
+    } else {
+        echo "Aucun résultat disponible pour le moment...";
     }
 }
 

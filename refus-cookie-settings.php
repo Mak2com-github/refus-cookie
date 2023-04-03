@@ -190,7 +190,7 @@ function refus_cookie_settings() {
                 </div>
             </div>
 
-            <div class="settings-body">
+            <div class="settings_datas">
                     <h2>Données</h2>
                     <div class="formulaire-date">
                         <form action="admin.php?page=refus-cookie-settings" method="post">
@@ -222,30 +222,32 @@ function refus_cookie_settings() {
                             <?php
                             $Settings = new RefusSettings();
                             $Values = $Settings->getRefusInterval();
-                            foreach ($Values as $value) {
-                                ?>
-                                <tr class="hentry entry">
-                                    <th class="value column-value has-row-actions column-primary">
-                                        <?php
-                                            if (!empty($value[0])) {
-                                                ?>
-                                                <p><?=$value[0] ?></p>
-                                                <?php
-                                            }
-                                        ?>
-                                    </th>
-                                    <th class="value column-value has-row-actions column-primary">
-                                        <?php
-                                            echo($_POST["debut"]);
-                                        ?>
-                                    </th>
-                                    <th class="value column-value has-row-actions column-primary">
-                                        <?php
-                                            echo($_POST["fin"]);
-                                        ?>
-                                    </th>
-                                </tr>
-                                <?php
+                            if (!empty($Values)) {
+                                foreach ($Values as $value) {
+                                    ?>
+                                    <tr class="hentry entry">
+                                        <th class="value column-value has-row-actions column-primary">
+                                            <?php
+                                                if (!empty($value[0])) {
+                                                    ?>
+                                                    <p><?=$value[0] ?></p>
+                                                    <?php
+                                                }
+                                            ?>
+                                        </th>
+                                        <th class="value column-value has-row-actions column-primary">
+                                            <?php
+                                                echo($_POST["debut"]);
+                                            ?>
+                                        </th>
+                                        <th class="value column-value has-row-actions column-primary">
+                                            <?php
+                                                echo($_POST["fin"]);
+                                            ?>
+                                        </th>
+                                    </tr>
+                                    <?php
+                                }
                             }
                             ?>
                         </tbody>

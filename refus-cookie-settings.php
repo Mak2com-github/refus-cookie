@@ -237,12 +237,18 @@ function refus_cookie_settings() {
                                         </th>
                                         <th class="value column-value has-row-actions column-primary">
                                             <?php
-                                                echo($_POST["debut"]);
+                                                $startDate = $_POST["debut"];
+                                                $date = DateTime::createFromFormat('Y-m-d', $startDate);
+                                                $formatted = $date->format('d-m-Y');
+                                                echo $formatted
                                             ?>
                                         </th>
                                         <th class="value column-value has-row-actions column-primary">
                                             <?php
-                                                echo($_POST["fin"]);
+                                                $endDate = $_POST["fin"];
+                                                $date = DateTime::createFromFormat('Y-m-d', $endDate);
+                                                $formatted = $date->format('d-m-Y');
+                                                echo $formatted
                                             ?>
                                         </th>
                                     </tr>

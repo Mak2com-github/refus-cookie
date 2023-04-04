@@ -56,8 +56,7 @@ if(!class_exists('RefusSettings')) {
                 $dt1 = preg_replace('#([0-3].)/([0-1].)/(2.{3})#', '$3-$2-$1', $dt1); 
                 $dt2 = preg_replace('#([0-3].)/([0-1].)/(2.{3})#', '$3-$2-$1', $dt2);
                 // $query = $this->wpdb->get_results("SELECT created_at FROM $this->data_table WHERE refus = 0 AND created_at BETWEEN '$dt1' AND '$dt2' ", ARRAY_N);
-                $query = $this->wpdb->get_results("SELECT count(*) FROM $this->data_table WHERE created_at >= '$dt1' AND created_at >= '$dt2'", ARRAY_N);
-
+                $query = $this->wpdb->get_results("SELECT count(*) FROM $this->data_table WHERE created_at >= '$dt1 00:00:00' AND created_at < '$dt2 23:59:59'", ARRAY_N);
                 return $query;
             }
             // $query= "SELECT FROM $this->data_table ";
